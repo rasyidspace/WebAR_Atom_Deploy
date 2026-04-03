@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebAR Atom — Model Atom Interaktif</title>
+  <meta name="description" content="Scan marker untuk melihat model atom 3D secara augmented reality" />
+
+  <!-- MindAR + Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      background: #000;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* UI Overlay */
+    #ui-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #header {
+      background: linear-gradient(135deg, rgba(10,10,30,0.85), rgba(30,10,60,0.85));
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(120,80,255,0.3);
+    }
+
+    #header h1 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    #header span {
+      color: #a78bfa;
+      font-size: 13px;
+    }
+
+    /* Info panel saat marker terdeteksi */
+    #info-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(10,10,30,0.9), rgba(30,10,60,0.9));
+      backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(120,80,255,0.4);
+      padding: 16px 20px;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      z-index: 999;
+    }
+
+    #info-panel.visible {
+      transform: translateY(0);
+    }
+
+    #info-panel h2 {
+      color: #a78bfa;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    #info-panel p {
+      color: rgba(255,255,255,0.8);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Scan guide */
+    #scan-guide {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 998;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+
+    #scan-guide .frame {
+      width: 220px;
+      height: 220px;
+      border: 2px solid rgba(167,139,250,0.6);
+      border-radius: 12px;
+      margin: 0 auto 16px;
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    #scan-guide .frame::before,
+    #scan-guide .frame::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-color: #a78bfa;
+      border-style: solid;
+    }
+
+    #scan-guide .frame::before {
+      top: -2px; left: -2px;
+      border-width: 3px 0 0 3px;
+      border-radius: 8px 0 0 0;
+    }
+
+    #scan-guide .frame::after {
+      bottom: -2px; right: -2px;
+      border-width: 0 3px 3px 0;
+      border-radius: 0 0 8px 0;
+    }
+
+    #scan-guide p {
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+
+    #scan-guide.hidden {
+      opacity: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { border-color: rgba(167,139,250,0.4); box-shadow: 0 0 0 0 rgba(167,139,250,0.2); }
+      50% { border-color: rgba(167,139,250,0.9); box-shadow: 0 0 20px 5px rgba(167,139,250,0.15); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <!-- Header UI -->
+  <div id="ui-overlay">
+    <div id="header">
+      <h1>⚛️ WebAR Atom</h1>
+      <span>Scan marker untuk melihat model atom</span>
+    </div>
+  </div>
+
+  <!-- Scan Guide -->
+  <div id="scan-guide">
+    <div class="frame"></div>
+    <p>Arahkan kamera ke marker atom</p>
+  </div>
+
+  <!-- Info Panel -->
+  <div id="info-panel">
+    <h2 id="info-title">Model Atom</h2>
+    <p id="info-desc">Deskripsi model atom</p>
+  </div>
+
+  <script>
+    // ================================================
+    // DATA MARKER — sesuai index saat compile MindAR
+    // ================================================
+    const MARKERS = [
+      {
+        index: 0,
+        name: "Teori Atom Dalton",
+        model: "./models/dalton.glb",
+        desc: "John Dalton (1803) — Model atom bola pejal. Atom adalah bola kecil keras yang tidak dapat dibagi.",
+        scale: 0.1
+      },
+      {
+        index: 1,
+        name: "Mekanika Kuantum",
+        model: "./models/mekakuantum.glb",
+        desc: "Model mekanika kuantum modern — Elektron berada dalam orbital dengan probabilitas tertentu.",
+        scale: 0.1
+      },
+      {
+        index: 2,
+        name: "Teori Atom Niels Bohr",
+        model: "./models/nielsbohr.glb",
+        desc: "Niels Bohr (1913) — Elektron mengorbit inti dalam lintasan/kulit tertentu dengan energi tetap.",
+        scale: 0.1
+      },
+      {
+        index: 3,
+        name: "Teori Atom Rutherford",
+        model: "./models/rutherford.glb",
+        desc: "Ernest Rutherford (1911) — Atom memiliki inti kecil bermuatan positif dikelilingi elektron.",
+        scale: 0.1
+      },
+      {
+        index: 4,
+        name: "Teori Atom Thomson",
+        model: "./models/thomson.glb",
+        desc: "J.J. Thomson (1897) — Model roti kismis. Elektron tersebar dalam bola bermuatan positif.",
+        scale: 0.1
+      }
+    ];
+
+    // ================================================
+    // INIT MindAR
+    // ================================================
+    const start = async () => {
+      const mindarThree = new MindARThree({
+        container: document.querySelector("#container"),
+        imageTargetSrc: "./markers/targets.mind",
+      });
+
+      const { renderer, scene, camera } = mindarThree;
+      const loader = new THREE.GLTFLoader();
+      const infoPanel = document.getElementById("info-panel");
+      const scanGuide = document.getElementById("scan-guide");
+      const infoTitle = document.getElementById("info-title");
+      const infoDesc = document.getElementById("info-desc");
+      let activeMarker = null;
+
+      // Load & attach tiap marker
+      for (const marker of MARKERS) {
+        const anchor = mindarThree.addAnchor(marker.index);
+
+        // Load model 3D
+        loader.load(marker.model, (gltf) => {
+          const model = gltf.scene;
+          model.scale.set(marker.scale, marker.scale, marker.scale);
+          anchor.group.add(model);
+        }, undefined, (err) => {
+          console.warn(`Gagal load model: ${marker.model}`, err);
+        });
+
+        // Event: marker ditemukan
+        anchor.onTargetFound = () => {
+          activeMarker = marker;
+          scanGuide.classList.add("hidden");
+          infoTitle.textContent = marker.name;
+          infoDesc.textContent = marker.desc;
+          infoPanel.classList.add("visible");
+        };
+
+        // Event: marker hilang
+        anchor.onTargetLost = () => {
+          infoPanel.classList.remove("visible");
+          scanGuide.classList.remove("hidden");
+          activeMarker = null;
+        };
+      }
+
+      // Mulai AR
+      await mindarThree.start();
+
+      // Render loop
+      renderer.setAnimationLoop(() => {
+        renderer.render(scene, camera);
+      });
+    };
+
+    start().catch(console.error);
+  </script>
+</body>
+</html>

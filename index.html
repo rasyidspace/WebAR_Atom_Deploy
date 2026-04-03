@@ -6,41 +6,16 @@
   <title>WebAR Atom — Model Atom Interaktif</title>
   <meta name="description" content="Scan marker untuk melihat model atom 3D secara augmented reality" />
 
-  <!-- MindAR + Three.js -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      overflow: hidden;
-      background: #000;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    #container {
-      width: 100vw;
-      height: 100vh;
-      position: relative;
-    }
-
-    /* UI Overlay */
-    #ui-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 999;
-      pointer-events: none;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #000; font-family: 'Segoe UI', sans-serif; }
 
     #header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
       background: linear-gradient(135deg, rgba(10,10,30,0.85), rgba(30,10,60,0.85));
       backdrop-filter: blur(10px);
       padding: 12px 20px;
@@ -48,57 +23,31 @@
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid rgba(120,80,255,0.3);
+      z-index: 999;
     }
 
-    #header h1 {
-      color: #fff;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
+    #header h1 { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+    #header span { color: #a78bfa; font-size: 13px; }
 
-    #header span {
-      color: #a78bfa;
-      font-size: 13px;
-    }
-
-    /* Info panel saat marker terdeteksi */
     #info-panel {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(135deg, rgba(10,10,30,0.9), rgba(30,10,60,0.9));
+      bottom: 0; left: 0; width: 100%;
+      background: linear-gradient(135deg, rgba(10,10,30,0.92), rgba(30,10,60,0.92));
       backdrop-filter: blur(15px);
       border-top: 1px solid rgba(120,80,255,0.4);
-      padding: 16px 20px;
+      padding: 16px 20px 24px;
       transform: translateY(100%);
       transition: transform 0.4s ease;
       z-index: 999;
     }
 
-    #info-panel.visible {
-      transform: translateY(0);
-    }
+    #info-panel.visible { transform: translateY(0); }
+    #info-panel h2 { color: #a78bfa; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    #info-panel p { color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.6; }
 
-    #info-panel h2 {
-      color: #a78bfa;
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    #info-panel p {
-      color: rgba(255,255,255,0.8);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    /* Scan guide */
     #scan-guide {
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       z-index: 998;
@@ -106,177 +55,120 @@
       transition: opacity 0.5s;
     }
 
-    #scan-guide .frame {
-      width: 220px;
-      height: 220px;
-      border: 2px solid rgba(167,139,250,0.6);
+    #scan-guide.hidden { opacity: 0; }
+
+    .scan-frame {
+      width: 220px; height: 220px;
+      border: 2px solid rgba(167,139,250,0.5);
       border-radius: 12px;
       margin: 0 auto 16px;
-      position: relative;
       animation: pulse 2s infinite;
     }
 
-    #scan-guide .frame::before,
-    #scan-guide .frame::after {
-      content: '';
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      border-color: #a78bfa;
-      border-style: solid;
-    }
-
-    #scan-guide .frame::before {
-      top: -2px; left: -2px;
-      border-width: 3px 0 0 3px;
-      border-radius: 8px 0 0 0;
-    }
-
-    #scan-guide .frame::after {
-      bottom: -2px; right: -2px;
-      border-width: 0 3px 3px 0;
-      border-radius: 0 0 8px 0;
-    }
-
-    #scan-guide p {
-      color: rgba(255,255,255,0.8);
-      font-size: 14px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    }
-
-    #scan-guide.hidden {
-      opacity: 0;
-    }
+    #scan-guide p { color: rgba(255,255,255,0.85); font-size: 14px; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
 
     @keyframes pulse {
-      0%, 100% { border-color: rgba(167,139,250,0.4); box-shadow: 0 0 0 0 rgba(167,139,250,0.2); }
-      50% { border-color: rgba(167,139,250,0.9); box-shadow: 0 0 20px 5px rgba(167,139,250,0.15); }
+      0%, 100% { border-color: rgba(167,139,250,0.3); box-shadow: 0 0 0 0 rgba(167,139,250,0); }
+      50% { border-color: rgba(167,139,250,1); box-shadow: 0 0 20px 4px rgba(167,139,250,0.2); }
     }
   </style>
 </head>
 <body>
 
-  <div id="container"></div>
-
-  <!-- Header UI -->
-  <div id="ui-overlay">
-    <div id="header">
-      <h1>⚛️ WebAR Atom</h1>
-      <span>Scan marker untuk melihat model atom</span>
-    </div>
+  <!-- Header -->
+  <div id="header">
+    <h1>⚛️ WebAR Atom</h1>
+    <span>Scan marker untuk melihat model atom</span>
   </div>
 
   <!-- Scan Guide -->
   <div id="scan-guide">
-    <div class="frame"></div>
+    <div class="scan-frame"></div>
     <p>Arahkan kamera ke marker atom</p>
   </div>
 
   <!-- Info Panel -->
   <div id="info-panel">
-    <h2 id="info-title">Model Atom</h2>
-    <p id="info-desc">Deskripsi model atom</p>
+    <h2 id="info-title">-</h2>
+    <p id="info-desc">-</p>
   </div>
 
+  <!-- A-Frame MindAR Scene -->
+  <a-scene
+    mindar-image="imageTargetSrc: ./markers/targets.mind; autoStart: true; uiLoading: yes; uiError: yes; uiScanning: no;"
+    color-space="sRGB"
+    renderer="colorManagement: true; physicallyCorrectLights: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+  >
+
+    <a-assets>
+      <a-asset-item id="model-dalton"      src="./models/dalton.glb"></a-asset-item>
+      <a-asset-item id="model-mekakuantum" src="./models/mekakuantum.glb"></a-asset-item>
+      <a-asset-item id="model-nielsbohr"   src="./models/nielsbohr.glb"></a-asset-item>
+      <a-asset-item id="model-rutherford"  src="./models/rutherford.glb"></a-asset-item>
+      <a-asset-item id="model-thomson"     src="./models/thomson.glb"></a-asset-item>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- Index 0: Dalton -->
+    <a-entity mindar-image-target="targetIndex: 0" id="target-dalton">
+      <a-gltf-model src="#model-dalton" position="0 0 0" rotation="0 0 0" scale="0.08 0.08 0.08"></a-gltf-model>
+    </a-entity>
+
+    <!-- Index 1: MekaKuantum -->
+    <a-entity mindar-image-target="targetIndex: 1" id="target-mekakuantum">
+      <a-gltf-model src="#model-mekakuantum" position="0 0 0" rotation="0 0 0" scale="0.08 0.08 0.08"></a-gltf-model>
+    </a-entity>
+
+    <!-- Index 2: NielsBohr -->
+    <a-entity mindar-image-target="targetIndex: 2" id="target-nielsbohr">
+      <a-gltf-model src="#model-nielsbohr" position="0 0 0" rotation="0 0 0" scale="0.08 0.08 0.08"></a-gltf-model>
+    </a-entity>
+
+    <!-- Index 3: Rutherford -->
+    <a-entity mindar-image-target="targetIndex: 3" id="target-rutherford">
+      <a-gltf-model src="#model-rutherford" position="0 0 0" rotation="0 0 0" scale="0.08 0.08 0.08"></a-gltf-model>
+    </a-entity>
+
+    <!-- Index 4: Thomson -->
+    <a-entity mindar-image-target="targetIndex: 4" id="target-thomson">
+      <a-gltf-model src="#model-thomson" position="0 0 0" rotation="0 0 0" scale="0.08 0.08 0.08"></a-gltf-model>
+    </a-entity>
+
+  </a-scene>
+
   <script>
-    // ================================================
-    // DATA MARKER — sesuai index saat compile MindAR
-    // ================================================
-    const MARKERS = [
-      {
-        index: 0,
-        name: "Teori Atom Dalton",
-        model: "./models/dalton.glb",
-        desc: "John Dalton (1803) — Model atom bola pejal. Atom adalah bola kecil keras yang tidak dapat dibagi.",
-        scale: 0.1
-      },
-      {
-        index: 1,
-        name: "Mekanika Kuantum",
-        model: "./models/mekakuantum.glb",
-        desc: "Model mekanika kuantum modern — Elektron berada dalam orbital dengan probabilitas tertentu.",
-        scale: 0.1
-      },
-      {
-        index: 2,
-        name: "Teori Atom Niels Bohr",
-        model: "./models/nielsbohr.glb",
-        desc: "Niels Bohr (1913) — Elektron mengorbit inti dalam lintasan/kulit tertentu dengan energi tetap.",
-        scale: 0.1
-      },
-      {
-        index: 3,
-        name: "Teori Atom Rutherford",
-        model: "./models/rutherford.glb",
-        desc: "Ernest Rutherford (1911) — Atom memiliki inti kecil bermuatan positif dikelilingi elektron.",
-        scale: 0.1
-      },
-      {
-        index: 4,
-        name: "Teori Atom Thomson",
-        model: "./models/thomson.glb",
-        desc: "J.J. Thomson (1897) — Model roti kismis. Elektron tersebar dalam bola bermuatan positif.",
-        scale: 0.1
-      }
-    ];
-
-    // ================================================
-    // INIT MindAR
-    // ================================================
-    const start = async () => {
-      const mindarThree = new MindARThree({
-        container: document.querySelector("#container"),
-        imageTargetSrc: "./markers/targets.mind",
-      });
-
-      const { renderer, scene, camera } = mindarThree;
-      const loader = new THREE.GLTFLoader();
-      const infoPanel = document.getElementById("info-panel");
-      const scanGuide = document.getElementById("scan-guide");
-      const infoTitle = document.getElementById("info-title");
-      const infoDesc = document.getElementById("info-desc");
-      let activeMarker = null;
-
-      // Load & attach tiap marker
-      for (const marker of MARKERS) {
-        const anchor = mindarThree.addAnchor(marker.index);
-
-        // Load model 3D
-        loader.load(marker.model, (gltf) => {
-          const model = gltf.scene;
-          model.scale.set(marker.scale, marker.scale, marker.scale);
-          anchor.group.add(model);
-        }, undefined, (err) => {
-          console.warn(`Gagal load model: ${marker.model}`, err);
-        });
-
-        // Event: marker ditemukan
-        anchor.onTargetFound = () => {
-          activeMarker = marker;
-          scanGuide.classList.add("hidden");
-          infoTitle.textContent = marker.name;
-          infoDesc.textContent = marker.desc;
-          infoPanel.classList.add("visible");
-        };
-
-        // Event: marker hilang
-        anchor.onTargetLost = () => {
-          infoPanel.classList.remove("visible");
-          scanGuide.classList.remove("hidden");
-          activeMarker = null;
-        };
-      }
-
-      // Mulai AR
-      await mindarThree.start();
-
-      // Render loop
-      renderer.setAnimationLoop(() => {
-        renderer.render(scene, camera);
-      });
+    const MARKER_INFO = {
+      'target-dalton':      { title: 'Teori Atom Dalton', desc: 'John Dalton (1803) — Model atom bola pejal. Atom adalah bola kecil keras yang tidak dapat dibagi-bagi.' },
+      'target-mekakuantum': { title: 'Model Mekanika Kuantum', desc: 'Model modern — Elektron berada dalam orbital berupa awan probabilitas di sekitar inti atom.' },
+      'target-nielsbohr':   { title: 'Teori Atom Niels Bohr', desc: 'Niels Bohr (1913) — Elektron mengorbit inti dalam lintasan/kulit tertentu dengan energi tetap.' },
+      'target-rutherford':  { title: 'Teori Atom Rutherford', desc: 'Ernest Rutherford (1911) — Atom punya inti kecil bermuatan positif, dikelilingi elektron.' },
+      'target-thomson':     { title: 'Teori Atom Thomson', desc: 'J.J. Thomson (1897) — Model roti kismis. Elektron tersebar dalam bola bermuatan positif.' },
     };
 
-    start().catch(console.error);
+    const infoPanel  = document.getElementById('info-panel');
+    const scanGuide  = document.getElementById('scan-guide');
+    const infoTitle  = document.getElementById('info-title');
+    const infoDesc   = document.getElementById('info-desc');
+
+    document.querySelectorAll('[mindar-image-target]').forEach(el => {
+      el.addEventListener('targetFound', () => {
+        const info = MARKER_INFO[el.id];
+        if (info) {
+          infoTitle.textContent = info.title;
+          infoDesc.textContent  = info.desc;
+          infoPanel.classList.add('visible');
+          scanGuide.classList.add('hidden');
+        }
+      });
+      el.addEventListener('targetLost', () => {
+        infoPanel.classList.remove('visible');
+        scanGuide.classList.remove('hidden');
+      });
+    });
   </script>
+
 </body>
 </html>

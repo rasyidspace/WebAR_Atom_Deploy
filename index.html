@@ -141,12 +141,12 @@
     <!-- Kamera dengan model 3D sebagai child (posisi fixed di tengah) -->
     <a-camera position="0 0 0" look-controls="enabled: false">
       <!-- Container model, selalu di tengah layar -->
-      <a-entity id="model-display" position="0 0.05 -0.5" visible="false">
-        <a-gltf-model id="display-0" src="#model-dalton"      scale="0.2 0.2 0.2" visible="false"></a-gltf-model>
-        <a-gltf-model id="display-1" src="#model-mekakuantum" scale="0.2 0.2 0.2" visible="false"></a-gltf-model>
-        <a-gltf-model id="display-2" src="#model-nielsbohr"   scale="0.2 0.2 0.2" visible="false"></a-gltf-model>
-        <a-gltf-model id="display-3" src="#model-rutherford"  scale="0.2 0.2 0.2" visible="false"></a-gltf-model>
-        <a-gltf-model id="display-4" src="#model-thomson"     scale="0.2 0.2 0.2" visible="false"></a-gltf-model>
+      <a-entity id="model-display" position="0 0 -0.3" visible="false">
+        <a-gltf-model id="display-0" src="#model-dalton"      scale="0.5 0.5 0.5" visible="false"></a-gltf-model>
+        <a-gltf-model id="display-1" src="#model-mekakuantum" scale="0.5 0.5 0.5" visible="false"></a-gltf-model>
+        <a-gltf-model id="display-2" src="#model-nielsbohr"   scale="0.5 0.5 0.5" visible="false"></a-gltf-model>
+        <a-gltf-model id="display-3" src="#model-rutherford"  scale="0.5 0.5 0.5" visible="false"></a-gltf-model>
+        <a-gltf-model id="display-4" src="#model-thomson"     scale="0.5 0.5 0.5" visible="false"></a-gltf-model>
       </a-entity>
     </a-camera>
 
@@ -226,7 +226,7 @@
         const el = document.getElementById(`display-${i}`);
         el.setAttribute('visible', 'false');
         el.object3D.rotation.set(0, 0, 0);
-        el.object3D.scale.set(0.2, 0.2, 0.2);
+        el.object3D.scale.set(0.5, 0.5, 0.5);
       }
 
       modelDisplay.setAttribute('visible', 'false');

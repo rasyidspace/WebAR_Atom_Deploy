@@ -1,433 +1,615 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>WebAR Atom — Model Atom Interaktif</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{overflow:hidden;background:#0a0a1e;font-family:'Segoe UI',sans-serif;color:#fff}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      overflow: hidden;
+      background: #0a0a1e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff
+    }
 
     /* ── Tab Bar ── */
-    #tab-bar{
-      position:fixed;top:0;left:0;width:100%;
-      display:flex;z-index:1000;
-      background:rgba(10,10,30,0.95);
-      border-bottom:1px solid rgba(120,80,255,0.3);
+    #tab-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      z-index: 1000;
+      background: rgba(10, 10, 30, 0.95);
+      border-bottom: 1px solid rgba(120, 80, 255, 0.3);
     }
-    .tab-btn{
-      flex:1;padding:14px 8px;
-      background:none;border:none;color:rgba(255,255,255,0.5);
-      font-size:13px;font-weight:600;cursor:pointer;
-      border-bottom:2px solid transparent;
-      transition:all 0.3s;
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px 8px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
     }
-    .tab-btn.active{color:#a78bfa;border-bottom-color:#a78bfa;}
+
+    .tab-btn.active {
+      color: #a78bfa;
+      border-bottom-color: #a78bfa;
+    }
 
     /* ── AR Panel ── */
-    #ar-panel{position:fixed;top:48px;left:0;width:100%;height:calc(100%-48px);z-index:1}
-    #ar-panel.hidden{display:none}
-
-    a-scene{position:fixed;top:48px;left:0;width:100%;height:calc(100% - 48px);z-index:1}
-
-    #scan-guide{
-      position:fixed;top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      text-align:center;z-index:998;pointer-events:none;transition:opacity 0.4s;
-    }
-    #scan-guide.hidden{opacity:0}
-    .scan-frame{
-      width:200px;height:200px;
-      border:2px solid rgba(167,139,250,0.5);border-radius:14px;
-      margin:0 auto 14px;animation:pulse 2s infinite;
-    }
-    #scan-guide p{color:rgba(255,255,255,0.85);font-size:14px;text-shadow:0 2px 8px rgba(0,0,0,0.9)}
-    @keyframes pulse{
-      0%,100%{border-color:rgba(167,139,250,0.3);box-shadow:none}
-      50%{border-color:rgba(167,139,250,1);box-shadow:0 0 24px 4px rgba(167,139,250,0.2)}
+    #ar-panel {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      height: calc(100%-48px);
+      z-index: 1
     }
 
-    #ar-viewer{
-      position:fixed;top:48px;left:0;width:100%;height:calc(100% - 48px - 130px);
-      z-index:100;display:none;background:transparent;--poster-color:transparent;
+    #ar-panel.hidden {
+      display: none
     }
-    #ar-info{
-      position:fixed;bottom:0;left:0;width:100%;
-      background:linear-gradient(135deg,rgba(10,10,30,0.92),rgba(30,10,60,0.92));
-      backdrop-filter:blur(16px);border-top:1px solid rgba(120,80,255,0.4);
-      padding:12px 20px 80px;
-      transform:translateY(100%);transition:transform 0.4s ease;z-index:200;
+
+    a-scene {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 48px);
+      z-index: 1
     }
-    #ar-info.visible{transform:translateY(0)}
-    #ar-info h2{color:#a78bfa;font-size:15px;font-weight:700;margin-bottom:4px}
-    #ar-info p{color:rgba(255,255,255,0.8);font-size:12px;line-height:1.6}
-    #btn-reset{
-      position:fixed;bottom:0;left:0;width:100%;padding:16px;
-      background:linear-gradient(135deg,#7c3aed,#4f46e5);
-      color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;
-      z-index:1000;display:flex;align-items:center;justify-content:center;gap:8px;
-      transform:translateY(100%);transition:transform 0.4s ease;
+
+    #scan-guide {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 998;
+      pointer-events: none;
+      transition: opacity 0.4s;
     }
-    #btn-reset.visible{transform:translateY(0)}
+
+    #scan-guide.hidden {
+      opacity: 0
+    }
+
+    .scan-frame {
+      width: 200px;
+      height: 200px;
+      border: 2px solid rgba(167, 139, 250, 0.5);
+      border-radius: 14px;
+      margin: 0 auto 14px;
+      animation: pulse 2s infinite;
+    }
+
+    #scan-guide p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9)
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        border-color: rgba(167, 139, 250, 0.3);
+        box-shadow: none
+      }
+
+      50% {
+        border-color: rgba(167, 139, 250, 1);
+        box-shadow: 0 0 24px 4px rgba(167, 139, 250, 0.2)
+      }
+    }
+
+    #ar-viewer {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 48px - 130px);
+      z-index: 100;
+      display: none;
+      background: transparent;
+      --poster-color: transparent;
+    }
+
+    #ar-info {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(10, 10, 30, 0.92), rgba(30, 10, 60, 0.92));
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(120, 80, 255, 0.4);
+      padding: 12px 20px 80px;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      z-index: 200;
+    }
+
+    #ar-info.visible {
+      transform: translateY(0)
+    }
+
+    #ar-info h2 {
+      color: #a78bfa;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    #ar-info p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 12px;
+      line-height: 1.6
+    }
+
+    #btn-reset {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+
+    #btn-reset.visible {
+      transform: translateY(0)
+    }
 
     /* ── Description Panel ── */
-    #desc-panel{
-      position:fixed;top:48px;left:0;width:100%;height:calc(100% - 48px);
-      background:#0a0a1e;display:none;flex-direction:column;z-index:10;overflow:hidden;
+    #desc-panel {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 48px);
+      background: #0a0a1e;
+      display: none;
+      flex-direction: column;
+      z-index: 10;
+      overflow: hidden;
     }
-    #desc-panel.active{display:flex}
+
+    #desc-panel.active {
+      display: flex
+    }
 
     /* Dual viewer container (crossfade dissolve) */
-    #viewer-wrap{position:relative;flex:1;overflow:hidden}
-    #viewer-a,#viewer-b{
-      position:absolute;top:0;left:0;width:100%;height:100%;
-      background:transparent;--poster-color:transparent;
-      transition:opacity 0.75s ease;
+    #viewer-wrap {
+      position: relative;
+      flex: 1;
+      overflow: hidden
     }
-    #viewer-b{opacity:0}
+
+    #viewer-a,
+    #viewer-b {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      --poster-color: transparent;
+      transition: opacity 0.75s ease;
+    }
+
+    #viewer-b {
+      opacity: 0
+    }
 
     /* Timer progress bar */
-    #timer-bar-wrap{
-      position:absolute;bottom:0;left:0;width:100%;height:3px;
-      background:rgba(255,255,255,0.1);z-index:50;
+    #timer-bar-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 50;
     }
-    #timer-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);width:0%;transition:none}
+
+    #timer-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      width: 0%;
+      transition: none
+    }
 
     /* Controls row */
-    #controls{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:10px 20px;background:rgba(10,10,30,0.8);
+    #controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: rgba(10, 10, 30, 0.8);
     }
-    .nav-btn{
-      width:42px;height:42px;border-radius:50%;
-      border:1px solid rgba(167,139,250,0.4);background:rgba(124,58,237,0.2);
-      color:#a78bfa;font-size:18px;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      transition:all 0.2s;
+
+    .nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(167, 139, 250, 0.4);
+      background: rgba(124, 58, 237, 0.2);
+      color: #a78bfa;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
     }
-    .nav-btn:active{background:rgba(124,58,237,0.5)}
+
+    .nav-btn:active {
+      background: rgba(124, 58, 237, 0.5)
+    }
 
     /* Progress dots */
-    #dots{display:flex;gap:8px}
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:rgba(255,255,255,0.25);transition:all 0.3s;cursor:pointer;
+    #dots {
+      display: flex;
+      gap: 8px
     }
-    .dot.active{background:#a78bfa;width:22px;border-radius:4px}
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: #a78bfa;
+      width: 22px;
+      border-radius: 4px
+    }
 
     /* Narration card */
-    #narration{
-      padding:16px 20px 20px;
-      background:linear-gradient(135deg,rgba(20,10,40,0.95),rgba(30,10,60,0.95));
-      border-top:1px solid rgba(120,80,255,0.3);
-      max-height:38vh;overflow-y:auto;
+    #narration {
+      padding: 16px 20px 20px;
+      background: linear-gradient(135deg, rgba(20, 10, 40, 0.95), rgba(30, 10, 60, 0.95));
+      border-top: 1px solid rgba(120, 80, 255, 0.3);
+      max-height: 38vh;
+      overflow-y: auto;
     }
-    #narration h2{color:#a78bfa;font-size:16px;font-weight:700;margin-bottom:8px}
-    #narration-year{color:rgba(167,139,250,0.7);font-size:12px;margin-bottom:10px;font-weight:600}
-    #narration p{color:rgba(255,255,255,0.82);font-size:13px;line-height:1.7}
+
+    #narration h2 {
+      color: #a78bfa;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    #narration-year {
+      color: rgba(167, 139, 250, 0.7);
+      font-size: 12px;
+      margin-bottom: 10px;
+      font-weight: 600
+    }
+
+    #narration p {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+      line-height: 1.7
+    }
 
     /* Narration fade on transition */
-    #narration.fade{opacity:0;transform:translateY(6px);transition:opacity 0.3s,transform 0.3s}
-    #narration.show{opacity:1;transform:translateY(0);transition:opacity 0.3s,transform 0.3s}
+    #narration.fade {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s, transform 0.3s
+    }
+
+    #narration.show {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.3s, transform 0.3s
+    }
   </style>
 </head>
+
 <body>
 
-<!-- ── Tab Bar ── -->
-<div id="tab-bar">
-  <button class="tab-btn active" id="tab-ar" onclick="switchTab('ar')">📷 AR Scan</button>
-  <button class="tab-btn" id="tab-desc" onclick="switchTab('desc')">⚛️ Atom Description</button>
-</div>
-
-<!-- ══ AR PANEL ══ -->
-<div id="ar-panel">
-  <div id="scan-guide">
-    <div class="scan-frame"></div>
-    <p>Arahkan kamera ke marker atom</p>
+  <!-- ── Tab Bar ── -->
+  <div id="tab-bar">
+    <button class="tab-btn active" id="tab-ar" onclick="switchTab('ar')">📷 AR Scan</button>
+    <button class="tab-btn" id="tab-desc" onclick="switchTab('desc')">⚛️ Atom Description</button>
   </div>
 
-  <model-viewer id="ar-viewer" camera-controls touch-action="pan-y"
-    shadow-intensity="0" auto-rotate auto-rotate-delay="3000"></model-viewer>
+  <!-- ══ AR PANEL ══ -->
+  <div id="ar-panel">
+    <div id="scan-guide">
+      <div class="scan-frame"></div>
+      <p>Arahkan kamera ke marker atom</p>
+    </div>
 
-  <div id="ar-info">
-    <h2 id="ar-title">-</h2>
-    <p id="ar-desc">-</p>
-  </div>
-  <button id="btn-reset">🔍 Scan Atom Lain</button>
+    <model-viewer id="ar-viewer" camera-controls touch-action="pan-y" shadow-intensity="0" auto-rotate
+      auto-rotate-delay="3000"></model-viewer>
 
-  <a-scene
-    mindar-image="imageTargetSrc:./markers/targets.mind;autoStart:true;uiLoading:yes;uiError:yes;uiScanning:no;"
-    color-space="sRGB" renderer="colorManagement:true"
-    vr-mode-ui="enabled:false" device-orientation-permission-ui="enabled:false">
-    <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
-    <a-entity mindar-image-target="targetIndex:0" id="target-dalton"></a-entity>
-    <a-entity mindar-image-target="targetIndex:1" id="target-mekakuantum"></a-entity>
-    <a-entity mindar-image-target="targetIndex:2" id="target-nielsbohr"></a-entity>
-    <a-entity mindar-image-target="targetIndex:3" id="target-rutherford"></a-entity>
-    <a-entity mindar-image-target="targetIndex:4" id="target-thomson"></a-entity>
-  </a-scene>
-</div>
+    <div id="ar-info">
+      <h2 id="ar-title">-</h2>
+      <p id="ar-desc">-</p>
+    </div>
+    <button id="btn-reset">🔍 Scan Atom Lain</button>
 
-<!-- ══ DESCRIPTION PANEL ══ -->
-<div id="desc-panel">
-  <div id="viewer-wrap">
-    <model-viewer id="viewer-a" camera-controls touch-action="pan-y"
-      shadow-intensity="0"
-      src="./models/AtomAnimated.glb"></model-viewer>
-    <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
+    <a-scene
+      mindar-image="imageTargetSrc:./markers/targets.mind;autoStart:true;uiLoading:yes;uiError:yes;uiScanning:no;"
+      color-space="sRGB" renderer="colorManagement:true" vr-mode-ui="enabled:false"
+      device-orientation-permission-ui="enabled:false">
+      <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
+      <a-entity mindar-image-target="targetIndex:0" id="target-dalton"></a-entity>
+      <a-entity mindar-image-target="targetIndex:1" id="target-mekakuantum"></a-entity>
+      <a-entity mindar-image-target="targetIndex:2" id="target-nielsbohr"></a-entity>
+      <a-entity mindar-image-target="targetIndex:3" id="target-rutherford"></a-entity>
+      <a-entity mindar-image-target="targetIndex:4" id="target-thomson"></a-entity>
+    </a-scene>
   </div>
 
-  <div id="controls">
-    <button class="nav-btn" onclick="navigate(-1)">&#8249;</button>
-    <div id="dots"></div>
-    <button class="nav-btn" onclick="navigate(1)">&#8250;</button>
+  <!-- ══ DESCRIPTION PANEL ══ -->
+  <div id="desc-panel">
+    <div id="viewer-wrap">
+      <model-viewer id="viewer-a" camera-controls touch-action="pan-y" shadow-intensity="0"
+        src="./models/AtomAnimated.glb"></model-viewer>
+      <div id="timer-bar-wrap">
+        <div id="timer-bar"></div>
+      </div>
+    </div>
+
+    <div id="controls">
+      <button class="nav-btn" onclick="navigate(-1)">&#8249;</button>
+      <div id="dots"></div>
+      <button class="nav-btn" onclick="navigate(1)">&#8250;</button>
+    </div>
+
+    <div id="narration" class="show">
+      <div id="narration-year"></div>
+      <h2 id="narration-title"></h2>
+      <p id="narration-text"></p>
+    </div>
   </div>
 
-  <div id="narration" class="show">
-    <div id="narration-year"></div>
-    <h2 id="narration-title"></h2>
-    <p id="narration-text"></p>
-  </div>
-</div>
+  <script>
+    // ── Atom Data ─────────────────────────────────────────────
+    // ── Frame positions (Blender 24fps) ─────────────────────
+    const FPS = 24;
+    const ATOM_FRAMES = [1, 30, 60, 90, 120]; // frame tiap atom (Blender verified)
+    const ATOM_TIMES = ATOM_FRAMES.map(f => f / FPS); // detik
 
-<script>
-// ── Atom Data ─────────────────────────────────────────────
-// ── Frame positions (Blender 24fps) ─────────────────────
-const FPS = 24;
-const ATOM_FRAMES = [1, 30, 60, 90, 120]; // frame tiap atom (Blender verified)
-const ATOM_TIMES  = ATOM_FRAMES.map(f => f / FPS); // detik
+    const ATOMS = [
+      {
+        frame: 0,
+        title: 'Atom Dalton --> Atom Thomson',
+        year: 'John Dalton • 1803',
+        desc: 'Atom tidak lagi dianggap bola pejal tetapi memiliki elektron di dalam muatan positif',
+      },
+      {
+        frame: 20,
+        title: 'Atom Thomson --> Atom Rutherford',
+        year: 'J.J. Thomson • 1897',
+        desc: 'Thomson menemukan elektron dan mengusulkan model "roti kismis" (plum pudding). Elektron bermuatan negatif tersebar di dalam bola bermuatan positif yang merata. Model ini pertama kali menunjukkan bahwa atom bukan partikel yang tidak dapat dibagi.',
+      },
+      {
+        frame: 50,
+        title: 'Atom Rutherford --> Atom Niels Bohr',
+        year: 'Ernest Rutherford • 1911',
+        desc: 'Melalui eksperimen hamburan sinar alfa (Geiger-Marsden), Rutherford menemukan bahwa atom memiliki inti yang sangat kecil, padat, dan bermuatan positif. Sebagian besar atom adalah ruang kosong. Elektron mengorbit di sekitar inti seperti planet mengelilingi matahari.',
+      },
+      {
+        frame: 80,
+        title: 'Atom Niels Bohr --> Atom Mekanika Kuantum',
+        year: 'Niels Bohr • 1913',
+        desc: 'Bohr menyempurnakan model Rutherford dengan mengusulkan bahwa elektron bergerak dalam lintasan/kulit tertentu dengan energi tetap. Elektron dapat berpindah antar kulit dengan menyerap atau memancarkan energi berupa foton cahaya. Model ini menjelaskan spektrum emisi hidrogen.',
+      },
+      {
+        frame: 110,
+        title: 'Model Mekanika Kuantum',
+        year: 'Schrödinger, Heisenberg • 1926',
+        desc: 'Model modern menggambarkan posisi elektron sebagai "awan probabilitas" atau orbital — daerah dengan kemungkinan tertinggi menemukan elektron. Berdasarkan Prinsip Ketidakpastian Heisenberg, tidak mungkin menentukan posisi dan momentum elektron secara bersamaan.',
+      },
+    ];
 
-const ATOMS = [
-  {
-    frame: 0,
-    title:'Teori Atom Dalton',
-    year:'John Dalton • 1803',
-    desc:'Dalton mengusulkan bahwa semua materi tersusun dari atom — partikel bola pejal yang sangat kecil dan tidak dapat dibagi. Setiap unsur memiliki atom yang identik satu sama lain. Reaksi kimia adalah penataan ulang atom-atom tersebut, bukan penciptaan atau pemusnahan.',
-  },
-  {
-    frame: 20,
-    title:'Teori Atom Thomson',
-    year:'J.J. Thomson • 1897',
-    desc:'Thomson menemukan elektron dan mengusulkan model "roti kismis" (plum pudding). Elektron bermuatan negatif tersebar di dalam bola bermuatan positif yang merata. Model ini pertama kali menunjukkan bahwa atom bukan partikel yang tidak dapat dibagi.',
-  },
-  {
-    frame: 50,
-    title:'Teori Atom Rutherford',
-    year:'Ernest Rutherford • 1911',
-    desc:'Melalui eksperimen hamburan sinar alfa (Geiger-Marsden), Rutherford menemukan bahwa atom memiliki inti yang sangat kecil, padat, dan bermuatan positif. Sebagian besar atom adalah ruang kosong. Elektron mengorbit di sekitar inti seperti planet mengelilingi matahari.',
-  },
-  {
-    frame: 80,
-    title:'Teori Atom Niels Bohr',
-    year:'Niels Bohr • 1913',
-    desc:'Bohr menyempurnakan model Rutherford dengan mengusulkan bahwa elektron bergerak dalam lintasan/kulit tertentu dengan energi tetap. Elektron dapat berpindah antar kulit dengan menyerap atau memancarkan energi berupa foton cahaya. Model ini menjelaskan spektrum emisi hidrogen.',
-  },
-  {
-    frame: 110,
-    title:'Model Mekanika Kuantum',
-    year:'Schrödinger, Heisenberg • 1926',
-    desc:'Model modern menggambarkan posisi elektron sebagai "awan probabilitas" atau orbital — daerah dengan kemungkinan tertinggi menemukan elektron. Berdasarkan Prinsip Ketidakpastian Heisenberg, tidak mungkin menentukan posisi dan momentum elektron secara bersamaan.',
-  },
-];
+    // ── AR Mode ───────────────────────────────────────────────
+    const AR_MARKERS = {
+      'target-dalton': { model: './models/dalton.glb', title: 'Teori Atom Dalton', desc: ATOMS[0].desc },
+      'target-thomson': { model: './models/thomson.glb', title: 'Teori Atom Thomson', desc: ATOMS[1].desc },
+      'target-rutherford': { model: './models/rutherford.glb', title: 'Teori Atom Rutherford', desc: ATOMS[2].desc },
+      'target-nielsbohr': { model: './models/nielsbohr.glb', title: 'Teori Atom Niels Bohr', desc: ATOMS[3].desc },
+      'target-mekakuantum': { model: './models/mekakuantum.glb', title: 'Model Mekanika Kuantum', desc: ATOMS[4].desc },
+    };
 
-// ── Narasi per atom (tampil saat atom stabil) ───────────────
-// Setiap narasi mendeskripsikan perubahan menuju teori berikutnya
-const TRANSITIONS = [
-  'Atom tidak lagi dianggap bola pejal — ternyata memiliki elektron yang tersebar di dalam muatan positif.',
-  'Muatan positif tidak tersebar merata, melainkan terpusat pada inti atom yang sangat kecil dan padat.',
-  'Elektron tidak mengorbit sembarang — mereka berada pada tingkat energi (kulit) tertentu yang tetap.',
-  'Posisi elektron tidak dapat ditentukan secara pasti — hanya dapat dinyatakan sebagai awan probabilitas di sekitar inti atom.',
-  'Model atom telah berkembang dari teori sederhana hingga mekanika kuantum yang kita gunakan hingga saat ini.',
-];
+    const arViewer = document.getElementById('ar-viewer');
+    const scanGuide = document.getElementById('scan-guide');
+    const arInfo = document.getElementById('ar-info');
+    const arTitle = document.getElementById('ar-title');
+    const arDesc = document.getElementById('ar-desc');
+    const btnReset = document.getElementById('btn-reset');
+    let arLocked = false;
 
-// ── AR Mode ───────────────────────────────────────────────
-const AR_MARKERS = {
-  'target-dalton':      {model:'./models/dalton.glb',     title:'Teori Atom Dalton',      desc:ATOMS[0].desc},
-  'target-thomson':     {model:'./models/thomson.glb',    title:'Teori Atom Thomson',     desc:ATOMS[1].desc},
-  'target-rutherford':  {model:'./models/rutherford.glb', title:'Teori Atom Rutherford',  desc:ATOMS[2].desc},
-  'target-nielsbohr':   {model:'./models/nielsbohr.glb',  title:'Teori Atom Niels Bohr',  desc:ATOMS[3].desc},
-  'target-mekakuantum': {model:'./models/mekakuantum.glb',title:'Model Mekanika Kuantum', desc:ATOMS[4].desc},
-};
+    document.querySelectorAll('[mindar-image-target]').forEach(t => {
+      t.addEventListener('targetFound', () => {
+        if (arLocked) return;
+        arLocked = true;
+        const info = AR_MARKERS[t.id]; if (!info) return;
+        arViewer.src = info.model;
+        arViewer.style.display = 'block';
+        arTitle.textContent = info.title;
+        arDesc.textContent = info.desc;
+        scanGuide.classList.add('hidden');
+        arInfo.classList.add('visible');
+        btnReset.classList.add('visible');
+      });
+    });
 
-const arViewer  = document.getElementById('ar-viewer');
-const scanGuide = document.getElementById('scan-guide');
-const arInfo    = document.getElementById('ar-info');
-const arTitle   = document.getElementById('ar-title');
-const arDesc    = document.getElementById('ar-desc');
-const btnReset  = document.getElementById('btn-reset');
-let arLocked = false;
+    btnReset.addEventListener('click', () => {
+      arLocked = false;
+      arViewer.style.display = 'none';
+      arViewer.src = '';
+      arInfo.classList.remove('visible');
+      btnReset.classList.remove('visible');
+      scanGuide.classList.remove('hidden');
+      setTimeout(() => { arTitle.textContent = '-'; arDesc.textContent = '-'; }, 400);
+    });
 
-document.querySelectorAll('[mindar-image-target]').forEach(t=>{
-  t.addEventListener('targetFound',()=>{
-    if(arLocked) return;
-    arLocked = true;
-    const info = AR_MARKERS[t.id]; if(!info) return;
-    arViewer.src = info.model;
-    arViewer.style.display = 'block';
-    arTitle.textContent = info.title;
-    arDesc.textContent  = info.desc;
-    scanGuide.classList.add('hidden');
-    arInfo.classList.add('visible');
-    btnReset.classList.add('visible');
-  });
-});
+    // ── Description / Tour Mode ───────────────────────────────
+    let curIdx = 0;
+    let autoTimer = null;
+    let seekTimer = null;
 
-btnReset.addEventListener('click',()=>{
-  arLocked = false;
-  arViewer.style.display = 'none';
-  arViewer.src = '';
-  arInfo.classList.remove('visible');
-  btnReset.classList.remove('visible');
-  scanGuide.classList.remove('hidden');
-  setTimeout(()=>{arTitle.textContent='-';arDesc.textContent='-';},400);
-});
+    const viewerA = document.getElementById('viewer-a');
+    const timerBar = document.getElementById('timer-bar');
+    const narration = document.getElementById('narration');
+    const narTitle = document.getElementById('narration-title');
+    const narYear = document.getElementById('narration-year');
+    const narText = document.getElementById('narration-text');
+    const dotsWrap = document.getElementById('dots');
 
-// ── Description / Tour Mode ───────────────────────────────
-let curIdx    = 0;
-let autoTimer = null;
-let seekTimer = null;
+    // Build dots
+    ATOMS.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goTo(i);
+      dotsWrap.appendChild(d);
+    });
 
-const viewerA   = document.getElementById('viewer-a');
-const timerBar  = document.getElementById('timer-bar');
-const narration = document.getElementById('narration');
-const narTitle  = document.getElementById('narration-title');
-const narYear   = document.getElementById('narration-year');
-const narText   = document.getElementById('narration-text');
-const dotsWrap  = document.getElementById('dots');
+    function updateDots(idx) {
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.className = 'dot' + (i === idx ? ' active' : '');
+      });
+    }
 
-// Build dots
-ATOMS.forEach((_,i)=>{
-  const d = document.createElement('span');
-  d.className = 'dot' + (i===0?' active':'');
-  d.onclick = ()=>goTo(i);
-  dotsWrap.appendChild(d);
-});
+    function updateNarration(atom) {
+      narration.classList.remove('show');
+      narration.classList.add('fade');
+      setTimeout(() => {
+        narTitle.textContent = atom.title;
+        narYear.textContent = atom.year;
+        narText.textContent = atom.desc;
+        narration.classList.remove('fade');
+        narration.classList.add('show');
+      }, 300);
+    }
 
-function updateDots(idx){
-  document.querySelectorAll('.dot').forEach((d,i)=>{
-    d.className = 'dot'+(i===idx?' active':'');
-  });
-}
+    // Seek ke waktu atom, lalu play animasi transisi ke target
+    function seekAndPlay(fromIdx, toIdx) {
+      const fromTime = ATOM_TIMES[fromIdx];
+      const toTime = ATOM_TIMES[toIdx];
+      const goingForward = toIdx > fromIdx;
 
-function updateNarration(atom){
-  narration.classList.remove('show');
-  narration.classList.add('fade');
-  setTimeout(()=>{
-    narTitle.textContent = atom.title;
-    narYear.textContent  = atom.year;
-    narText.textContent  = atom.desc;
-    narration.classList.remove('fade');
-    narration.classList.add('show');
-  },300);
-}
-
-// Seek ke waktu atom, lalu play animasi transisi ke target
-function seekAndPlay(fromIdx, toIdx){
-  const fromTime     = ATOM_TIMES[fromIdx];
-  const toTime       = ATOM_TIMES[toIdx];
-  const goingForward = toIdx > fromIdx;
-
-  updateDots(toIdx);
-
-  if(goingForward){
-    // Play animasi — narasi TIDAK berubah selama animasi
-    viewerA.currentTime = fromTime;
-    viewerA.play();
-    clearInterval(seekTimer);
-    seekTimer = setInterval(()=>{
-      if(viewerA.currentTime >= toTime){
+      if (goingForward) {
+        // Play animasi maju dari fromTime ke toTime
+        viewerA.currentTime = fromTime;
+        viewerA.play();
+        clearInterval(seekTimer);
+        seekTimer = setInterval(() => {
+          if (viewerA.currentTime >= toTime) {
+            viewerA.pause();
+            viewerA.currentTime = toTime;
+            clearInterval(seekTimer);
+          }
+        }, 50);
+      } else {
+        // Mundur: langsung seek (tidak ada animasi mundur)
         viewerA.pause();
         viewerA.currentTime = toTime;
-        clearInterval(seekTimer);
-        // Narasi ganti SETELAH animasi selesai (atom sudah stabil)
-        updateNarration({
-          title: ATOMS[toIdx].title,
-          year:  ATOMS[toIdx].year,
-          desc:  TRANSITIONS[toIdx],
-        });
       }
-    }, 50);
-  } else {
-    // Mundur: langsung seek
-    viewerA.pause();
-    viewerA.currentTime = toTime;
-    updateNarration({
-      title: ATOMS[toIdx].title,
-      year:  ATOMS[toIdx].year,
-      desc:  TRANSITIONS[toIdx],
-    });
-  }
-}
 
-function goTo(idx){
-  if(idx === curIdx) return;
-  const prev = curIdx;
-  curIdx = ((idx % ATOMS.length) + ATOMS.length) % ATOMS.length;
-  seekAndPlay(prev, curIdx);
-  resetTimer();
-}
+      updateDots(toIdx);
+      updateNarration(ATOMS[toIdx]);
+    }
 
-function navigate(dir){ goTo(curIdx + dir); }
+    function goTo(idx) {
+      if (idx === curIdx) return;
+      const prev = curIdx;
+      curIdx = ((idx % ATOMS.length) + ATOMS.length) % ATOMS.length;
+      seekAndPlay(prev, curIdx);
+      resetTimer();
+    }
 
-// Auto-advance timer with progress bar
-function startTimer(){
-  clearTimer();
-  timerBar.style.transition = 'none';
-  timerBar.style.width = '0%';
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      timerBar.style.transition = 'width 5s linear';
-      timerBar.style.width = '100%';
-    });
-  });
-  autoTimer = setTimeout(()=>{
-    goTo(curIdx+1);
-  },5000);
-}
+    function navigate(dir) { goTo(curIdx + dir); }
 
-function clearTimer(){
-  clearTimeout(autoTimer);
-  timerBar.style.transition = 'none';
-  timerBar.style.width = '0%';
-}
+    // Auto-advance timer with progress bar
+    function startTimer() {
+      clearTimer();
+      timerBar.style.transition = 'none';
+      timerBar.style.width = '0%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          timerBar.style.transition = 'width 5s linear';
+          timerBar.style.width = '100%';
+        });
+      });
+      autoTimer = setTimeout(() => {
+        goTo(curIdx + 1);
+      }, 5000);
+    }
 
-function resetTimer(){ startTimer(); }
+    function clearTimer() {
+      clearTimeout(autoTimer);
+      timerBar.style.transition = 'none';
+      timerBar.style.width = '0%';
+    }
 
-// Init description tab
-function initDesc(){
-  // Tampilkan narasi atom pertama saat tab dibuka
-  updateNarration({
-    title: ATOMS[0].title,
-    year:  ATOMS[0].year,
-    desc:  TRANSITIONS[0],
-  });
-  updateDots(0);
-  startTimer();
-}
+    function resetTimer() { startTimer(); }
 
-// ── Tab Switch ────────────────────────────────────────────
-function switchTab(tab){
-  const arPanel   = document.getElementById('ar-panel');
-  const descPanel = document.getElementById('desc-panel');
-  document.getElementById('tab-ar').classList.toggle('active',   tab==='ar');
-  document.getElementById('tab-desc').classList.toggle('active', tab==='desc');
+    // Init description tab
+    function initDesc() {
+      updateNarration(ATOMS[0]);
+      updateDots(0);
+      startTimer();
+    }
 
-  if(tab==='ar'){
-    arPanel.classList.remove('hidden');
-    descPanel.classList.remove('active');
-    clearTimer();
-  } else {
-    arPanel.classList.add('hidden');
-    descPanel.classList.add('active');
-    initDesc();
-  }
-}
+    // ── Tab Switch ────────────────────────────────────────────
+    function switchTab(tab) {
+      const arPanel = document.getElementById('ar-panel');
+      const descPanel = document.getElementById('desc-panel');
+      document.getElementById('tab-ar').classList.toggle('active', tab === 'ar');
+      document.getElementById('tab-desc').classList.toggle('active', tab === 'desc');
 
-// Start description at atom 0
-updateNarration(ATOMS[0]);
-</script>
+      if (tab === 'ar') {
+        arPanel.classList.remove('hidden');
+        descPanel.classList.remove('active');
+        clearTimer();
+      } else {
+        arPanel.classList.add('hidden');
+        descPanel.classList.add('active');
+        initDesc();
+      }
+    }
+
+    // Start description at atom 0
+    updateNarration(ATOMS[0]);
+  </script>
 </body>
+
 </html>

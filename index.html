@@ -175,10 +175,8 @@
 <div id="desc-panel">
   <div id="viewer-wrap">
     <model-viewer id="viewer-a" camera-controls touch-action="pan-y"
-      shadow-intensity="0" auto-rotate auto-rotate-delay="1000"
-      src="./models/dalton.glb"></model-viewer>
-    <model-viewer id="viewer-b" camera-controls touch-action="pan-y"
-      shadow-intensity="0" auto-rotate auto-rotate-delay="1000"></model-viewer>
+      shadow-intensity="0"
+      src="./models/AtomAnimated.glb"></model-viewer>
     <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
   </div>
 
@@ -197,33 +195,38 @@
 
 <script>
 // ── Atom Data ─────────────────────────────────────────────
+// ── Frame positions (Blender 24fps) ─────────────────────
+const FPS = 24;
+const ATOM_FRAMES = [0, 20, 50, 80, 110]; // frame tiap atom
+const ATOM_TIMES  = ATOM_FRAMES.map(f => f / FPS); // detik
+
 const ATOMS = [
   {
-    model:'./models/dalton.glb',
+    frame: 0,
     title:'Teori Atom Dalton',
     year:'John Dalton • 1803',
     desc:'Dalton mengusulkan bahwa semua materi tersusun dari atom — partikel bola pejal yang sangat kecil dan tidak dapat dibagi. Setiap unsur memiliki atom yang identik satu sama lain. Reaksi kimia adalah penataan ulang atom-atom tersebut, bukan penciptaan atau pemusnahan.',
   },
   {
-    model:'./models/thomson.glb',
+    frame: 20,
     title:'Teori Atom Thomson',
     year:'J.J. Thomson • 1897',
     desc:'Thomson menemukan elektron dan mengusulkan model "roti kismis" (plum pudding). Elektron bermuatan negatif tersebar di dalam bola bermuatan positif yang merata. Model ini pertama kali menunjukkan bahwa atom bukan partikel yang tidak dapat dibagi.',
   },
   {
-    model:'./models/rutherford.glb',
+    frame: 50,
     title:'Teori Atom Rutherford',
     year:'Ernest Rutherford • 1911',
     desc:'Melalui eksperimen hamburan sinar alfa (Geiger-Marsden), Rutherford menemukan bahwa atom memiliki inti yang sangat kecil, padat, dan bermuatan positif. Sebagian besar atom adalah ruang kosong. Elektron mengorbit di sekitar inti seperti planet mengelilingi matahari.',
   },
   {
-    model:'./models/nielsbohr.glb',
+    frame: 80,
     title:'Teori Atom Niels Bohr',
     year:'Niels Bohr • 1913',
     desc:'Bohr menyempurnakan model Rutherford dengan mengusulkan bahwa elektron bergerak dalam lintasan/kulit tertentu dengan energi tetap. Elektron dapat berpindah antar kulit dengan menyerap atau memancarkan energi berupa foton cahaya. Model ini menjelaskan spektrum emisi hidrogen.',
   },
   {
-    model:'./models/mekakuantum.glb',
+    frame: 110,
     title:'Model Mekanika Kuantum',
     year:'Schrödinger, Heisenberg • 1926',
     desc:'Model modern menggambarkan posisi elektron sebagai "awan probabilitas" atau orbital — daerah dengan kemungkinan tertinggi menemukan elektron. Berdasarkan Prinsip Ketidakpastian Heisenberg, tidak mungkin menentukan posisi dan momentum elektron secara bersamaan.',
@@ -273,19 +276,17 @@ btnReset.addEventListener('click',()=>{
 });
 
 // ── Description / Tour Mode ───────────────────────────────
-let curIdx     = 0;
-let activeSlot = 'a'; // which viewer is front
-let autoTimer  = null;
-let timerAnim  = null;
+let curIdx    = 0;
+let autoTimer = null;
+let seekTimer = null;
 
-const viewerA       = document.getElementById('viewer-a');
-const viewerB       = document.getElementById('viewer-b');
-const timerBar      = document.getElementById('timer-bar');
-const narration     = document.getElementById('narration');
-const narTitle      = document.getElementById('narration-title');
-const narYear       = document.getElementById('narration-year');
-const narText       = document.getElementById('narration-text');
-const dotsWrap      = document.getElementById('dots');
+const viewerA   = document.getElementById('viewer-a');
+const timerBar  = document.getElementById('timer-bar');
+const narration = document.getElementById('narration');
+const narTitle  = document.getElementById('narration-title');
+const narYear   = document.getElementById('narration-year');
+const narText   = document.getElementById('narration-text');
+const dotsWrap  = document.getElementById('dots');
 
 // Build dots
 ATOMS.forEach((_,i)=>{
@@ -313,41 +314,43 @@ function updateNarration(atom){
   },300);
 }
 
-function crossfade(idx){
-  const atom = ATOMS[idx];
-  const nextSlot  = activeSlot==='a'?'b':'a';
-  const frontView = activeSlot==='a'?viewerA:viewerB;
-  const backView  = activeSlot==='a'?viewerB:viewerA;
+// Seek ke waktu atom, lalu play animasi transisi ke target
+function seekAndPlay(fromIdx, toIdx){
+  const fromTime = ATOM_TIMES[fromIdx];
+  const toTime   = ATOM_TIMES[toIdx];
+  const goingForward = toIdx > fromIdx;
 
-  // Load next model in back viewer
-  backView.src = atom.model;
-  backView.style.opacity = '0';
+  if(goingForward){
+    // Play animasi maju dari fromTime ke toTime
+    viewerA.currentTime = fromTime;
+    viewerA.play();
+    clearInterval(seekTimer);
+    seekTimer = setInterval(()=>{
+      if(viewerA.currentTime >= toTime){
+        viewerA.pause();
+        viewerA.currentTime = toTime;
+        clearInterval(seekTimer);
+      }
+    }, 50);
+  } else {
+    // Mundur: langsung seek (tidak ada animasi mundur)
+    viewerA.pause();
+    viewerA.currentTime = toTime;
+  }
 
-  // Short delay so model starts loading, then dissolve
-  setTimeout(()=>{
-    frontView.style.opacity = '0';
-    backView.style.opacity  = '1';
-  }, 150);
-
-  setTimeout(()=>{
-    frontView.src = '';
-    activeSlot = nextSlot;
-  }, 900);
-
-  updateDots(idx);
-  updateNarration(atom);
+  updateDots(toIdx);
+  updateNarration(ATOMS[toIdx]);
 }
 
 function goTo(idx){
-  if(idx===curIdx) return;
-  curIdx = (idx+ATOMS.length)%ATOMS.length;
-  crossfade(curIdx);
+  if(idx === curIdx) return;
+  const prev = curIdx;
+  curIdx = ((idx % ATOMS.length) + ATOMS.length) % ATOMS.length;
+  seekAndPlay(prev, curIdx);
   resetTimer();
 }
 
-function navigate(dir){
-  goTo(curIdx+dir);
-}
+function navigate(dir){ goTo(curIdx + dir); }
 
 // Auto-advance timer with progress bar
 function startTimer(){

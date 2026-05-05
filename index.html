@@ -233,6 +233,15 @@ const ATOMS = [
   },
 ];
 
+// ── Narasi saat TRANSISI antar atom ──────────────────────
+const TRANSITIONS = [
+  'Atom tidak lagi dianggap bola pejal — ternyata memiliki elektron yang tersebar di dalam muatan positif.',
+  'Muatan positif tidak tersebar merata, melainkan terpusat pada inti atom yang sangat kecil dan padat.',
+  'Elektron tidak mengorbit sembarang — mereka berada pada tingkat energi (kulit) tertentu yang tetap.',
+  'Posisi elektron tidak dapat ditentukan secara pasti — hanya dapat dinyatakan sebagai awan probabilitas di sekitar inti atom.',
+  null, // loop balik ke Dalton
+];
+
 // ── AR Mode ───────────────────────────────────────────────
 const AR_MARKERS = {
   'target-dalton':      {model:'./models/dalton.glb',     title:'Teori Atom Dalton',      desc:ATOMS[0].desc},
@@ -316,12 +325,24 @@ function updateNarration(atom){
 
 // Seek ke waktu atom, lalu play animasi transisi ke target
 function seekAndPlay(fromIdx, toIdx){
-  const fromTime = ATOM_TIMES[fromIdx];
-  const toTime   = ATOM_TIMES[toIdx];
+  const fromTime     = ATOM_TIMES[fromIdx];
+  const toTime       = ATOM_TIMES[toIdx];
   const goingForward = toIdx > fromIdx;
 
+  updateDots(toIdx);
+
   if(goingForward){
-    // Play animasi maju dari fromTime ke toTime
+    // 1. Tampilkan narasi TRANSISI dulu
+    const transText = TRANSITIONS[fromIdx];
+    if(transText){
+      updateNarration({
+        title: ATOMS[fromIdx].title + ' → ' + ATOMS[toIdx].title,
+        year:  '',
+        desc:  transText,
+      });
+    }
+
+    // 2. Play animasi
     viewerA.currentTime = fromTime;
     viewerA.play();
     clearInterval(seekTimer);
@@ -330,16 +351,16 @@ function seekAndPlay(fromIdx, toIdx){
         viewerA.pause();
         viewerA.currentTime = toTime;
         clearInterval(seekTimer);
+        // 3. Setelah animasi selesai, tampilkan deskripsi atom tujuan
+        updateNarration(ATOMS[toIdx]);
       }
     }, 50);
   } else {
-    // Mundur: langsung seek (tidak ada animasi mundur)
+    // Mundur: langsung seek + tampilkan deskripsi atom tujuan
     viewerA.pause();
     viewerA.currentTime = toTime;
+    updateNarration(ATOMS[toIdx]);
   }
-
-  updateDots(toIdx);
-  updateNarration(ATOMS[toIdx]);
 }
 
 function goTo(idx){

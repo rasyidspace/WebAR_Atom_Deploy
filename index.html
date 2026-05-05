@@ -233,13 +233,14 @@ const ATOMS = [
   },
 ];
 
-// ── Narasi saat TRANSISI antar atom ──────────────────────
+// ── Narasi per atom (tampil saat atom stabil) ───────────────
+// Setiap narasi mendeskripsikan perubahan menuju teori berikutnya
 const TRANSITIONS = [
   'Atom tidak lagi dianggap bola pejal — ternyata memiliki elektron yang tersebar di dalam muatan positif.',
   'Muatan positif tidak tersebar merata, melainkan terpusat pada inti atom yang sangat kecil dan padat.',
   'Elektron tidak mengorbit sembarang — mereka berada pada tingkat energi (kulit) tertentu yang tetap.',
   'Posisi elektron tidak dapat ditentukan secara pasti — hanya dapat dinyatakan sebagai awan probabilitas di sekitar inti atom.',
-  null, // loop balik ke Dalton
+  'Model atom telah berkembang dari teori sederhana hingga mekanika kuantum yang kita gunakan hingga saat ini.',
 ];
 
 // ── AR Mode ───────────────────────────────────────────────
@@ -332,17 +333,7 @@ function seekAndPlay(fromIdx, toIdx){
   updateDots(toIdx);
 
   if(goingForward){
-    // 1. Tampilkan narasi TRANSISI dulu
-    const transText = TRANSITIONS[fromIdx];
-    if(transText){
-      updateNarration({
-        title: ATOMS[fromIdx].title + ' → ' + ATOMS[toIdx].title,
-        year:  '',
-        desc:  transText,
-      });
-    }
-
-    // 2. Play animasi
+    // Play animasi — narasi TIDAK berubah selama animasi
     viewerA.currentTime = fromTime;
     viewerA.play();
     clearInterval(seekTimer);
@@ -351,15 +342,23 @@ function seekAndPlay(fromIdx, toIdx){
         viewerA.pause();
         viewerA.currentTime = toTime;
         clearInterval(seekTimer);
-        // 3. Setelah animasi selesai, tampilkan deskripsi atom tujuan
-        updateNarration(ATOMS[toIdx]);
+        // Narasi ganti SETELAH animasi selesai (atom sudah stabil)
+        updateNarration({
+          title: ATOMS[toIdx].title,
+          year:  ATOMS[toIdx].year,
+          desc:  TRANSITIONS[toIdx],
+        });
       }
     }, 50);
   } else {
-    // Mundur: langsung seek + tampilkan deskripsi atom tujuan
+    // Mundur: langsung seek
     viewerA.pause();
     viewerA.currentTime = toTime;
-    updateNarration(ATOMS[toIdx]);
+    updateNarration({
+      title: ATOMS[toIdx].title,
+      year:  ATOMS[toIdx].year,
+      desc:  TRANSITIONS[toIdx],
+    });
   }
 }
 
@@ -399,7 +398,12 @@ function resetTimer(){ startTimer(); }
 
 // Init description tab
 function initDesc(){
-  updateNarration(ATOMS[0]);
+  // Tampilkan narasi atom pertama saat tab dibuka
+  updateNarration({
+    title: ATOMS[0].title,
+    year:  ATOMS[0].year,
+    desc:  TRANSITIONS[0],
+  });
   updateDots(0);
   startTimer();
 }

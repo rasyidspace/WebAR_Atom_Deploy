@@ -83,12 +83,12 @@ export class ThreeScene {
     }
 
     startLoop() {
-        this.renderer.setAnimationLoop(() => {
+        this.renderer.setAnimationLoop((timestamp, frame) => {
             const delta = this.clock.getDelta();
             
-            // Update all updatables (like OrbitControls or AnimationMixer)
+            // Update all updatables (like OrbitControls, AnimationMixer, or WebXRManager)
             for (const updatable of this.updatables) {
-                updatable.update(delta);
+                updatable.update(delta, frame);
             }
             
             this.renderer.render(this.scene, this.camera);

@@ -81,9 +81,24 @@ export class ModelLoader {
                 this.sceneContainer.addUpdatable(this);
             }
         }
+        
+        this.addFakeShadow(model);
 
         this.currentModel = model;
         this.scene.add(model);
+    }
+
+    addFakeShadow(modelGroup) {
+        const shadowGeo = new THREE.CircleGeometry(0.5, 32).rotateX(-Math.PI / 2);
+        const shadowMat = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: 0.15,
+            depthWrite: false
+        });
+        const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+        shadow.position.y = -0.05; // Slightly below the model
+        modelGroup.add(shadow);
     }
 
     generateFallbackModel(atomConfig) {
@@ -135,6 +150,8 @@ export class ModelLoader {
         if (!this.sceneContainer.updatables.includes(this)) {
             this.sceneContainer.addUpdatable(this);
         }
+        
+        this.addFakeShadow(group);
 
         this.currentModel = group;
         this.scene.add(group);

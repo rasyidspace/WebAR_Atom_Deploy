@@ -1,17 +1,18 @@
 import { ThreeScene } from './three-scene.js';
 import { ModelLoader } from './model-loader.js';
 import { InteractionManager } from './interaction.js';
+import { WebXRManager } from './webxr-manager.js';
 
 let currentAtomData = null;
 let threeScene = null;
 let modelLoader = null;
 let interactionManager = null;
+let xrManager = null;
 
 async function initARPage() {
     const urlParams = new URLSearchParams(window.location.search);
     let atomId = urlParams.get('id');
     
-    // Fallback if coming from play dashboard via localStorage
     if (!atomId) {
         const storedName = localStorage.getItem('selectedARModel');
         if (storedName) {
@@ -72,11 +73,9 @@ function renderSelectionModal(atoms) {
 }
 
 function populateUI(atom) {
-    // Prep screen
     const prepTitle = document.getElementById('prep-title');
     if (prepTitle) prepTitle.textContent = atom.name;
     
-    // Bottom Sheet
     document.getElementById('bs-title').textContent = atom.name;
     document.getElementById('bs-subtitle').textContent = atom.subtitle;
     document.getElementById('bs-desc').textContent = atom.description;
@@ -96,40 +95,82 @@ function switchState(stateId) {
     document.getElementById(stateId).classList.add('active');
 }
 
-// Initialization of Three.js Foundation
-window.startLoadingAR = function() {
+// Initialization
+window.startLoadingAR = async function() {
     switchState('ar-state-loading');
     const textEl = document.getElementById('loading-text');
-    textEl.textContent = "Initializing Engine...";
+    textEl.textContent = "Checking WebXR Support...";
 
-    // Initialize Three.js components if not already done
+    // 1. Check WebXR Capability
+    const isXRSupported = await WebXRManager.checkSupport();
+
     if (!threeScene) {
         threeScene = new ThreeScene('three-canvas');
         interactionManager = new InteractionManager(threeScene.camera, threeScene.renderer.domElement);
         threeScene.addUpdatable(interactionManager);
         
         modelLoader = new ModelLoader(threeScene);
-        
-        // Wire loading progress
         modelLoader.onProgress = (percent) => {
             textEl.textContent = `Loading Assets... ${Math.round(percent)}%`;
         };
+    }
+
+    if (isXRSupported) {
+        // Setup XR Manager
+        xrManager = new WebXRManager(threeScene, {
+            onSessionStarted: () => {
+                interactionManager.setARMode(true);
+            },
+            onSessionEnded: () => {
+                interactionManager.setARMode(false);
+                // Exit back to Prep or Viewer? Let's just fallback to Viewer Mode
+                switchState('ar-state-viewer');
+                threeScene.scene.background = new THREE.Color('#FFFBF5'); // Restore cream background
+            },
+            onSurfaceSearching: () => {
+                switchState('ar-state-scanning');
+            },
+            onSurfaceFound: () => {
+                switchState('ar-state-found');
+            },
+            onModelPlaced: (matrix) => {
+                switchState('ar-state-viewer');
+                if (modelLoader.currentModel) {
+                    modelLoader.currentModel.matrixAutoUpdate = false;
+                    modelLoader.currentModel.matrix.copy(matrix);
+                    modelLoader.currentModel.updateMatrixWorld(true);
+                    
+                    // Allow interaction manager to rotate/scale it
+                    interactionManager.setTargetModel(modelLoader.currentModel);
+                }
+            }
+        });
         
-        // Note: For this fallback, it loads instantly so we add a slight simulated delay
-        // to show the loading screen as requested.
+        threeScene.addUpdatable(xrManager);
+
         modelLoader.onLoadComplete = () => {
-            textEl.textContent = "Preparing Scene...";
-            setTimeout(() => {
-                showViewer();
-            }, 1000); // 1s artificial delay to read "Preparing Scene"
-        };
-        
-        modelLoader.onError = (url) => {
-            // Error is handled inside ModelLoader to generate fallback
-            console.log("Error loading, using fallback.");
+            textEl.textContent = "Starting AR Session...";
+            // We need a user gesture to start XR, but since this was triggered by startLoadingAR button click,
+            // the promise chain might have broken the user gesture requirement. 
+            // In modern browsers, we can start it if the chain wasn't too long.
+            threeScene.scene.background = null; // transparent for AR
+            xrManager.startSession(document.body);
+            threeScene.startLoop();
         };
 
-        // Start render loop
+    } else {
+        // Fallback to 3D Viewer Mode
+        textEl.textContent = "WebXR Unavailable. Falling back to 3D Viewer...";
+        interactionManager.setARMode(false);
+        threeScene.scene.background = new THREE.Color('#FFFBF5');
+        
+        modelLoader.onLoadComplete = () => {
+            setTimeout(() => {
+                switchState('ar-state-viewer');
+                interactionManager.setTargetModel(modelLoader.currentModel);
+            }, 1000);
+        };
+        
         threeScene.startLoop();
     }
 
@@ -139,7 +180,9 @@ window.startLoadingAR = function() {
     }
 }
 
-function showViewer() {
+// Global UI Overrides
+window.showViewer = function() {
+    // Only used to dismiss "Surface Found" early if needed, or by callbacks
     switchState('ar-state-viewer');
 }
 
@@ -154,7 +197,6 @@ window.toggleBottomSheet = function() {
     }
 }
 
-// Global closeModal override for this page
 window.closeModal = function() {
     document.getElementById('modal-overlay').classList.remove('active');
     document.getElementById('ar-modal').classList.remove('active');
@@ -163,9 +205,18 @@ window.closeModal = function() {
     }
 }
 
-// Add a function to reset camera from the floating UI
 window.resetARCamera = function() {
-    if (interactionManager) {
+    if (interactionManager.arMode && xrManager) {
+        // In AR Mode, reset model placement
+        xrManager.resetModelPlacement();
+        if (modelLoader.currentModel) {
+            // Move it out of view until placed again
+            modelLoader.currentModel.matrix.identity();
+            modelLoader.currentModel.position.set(0, -100, 0); 
+            modelLoader.currentModel.updateMatrixWorld(true);
+        }
+    } else {
+        // In Fallback 3D Mode, reset OrbitControls
         interactionManager.resetCamera();
     }
 }

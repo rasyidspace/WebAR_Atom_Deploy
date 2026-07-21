@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ATOM AR Learning - Petunjuk</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="bg-pattern"></div>
+
+    <section id="view-instructions" class="view active">
+      <div class="top-bar">
+        <button class="btn-icon back-btn" onclick="navigate('home')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2>Petunjuk Belajar</h2>
+      </div>
+      
+      <div class="scroll-container pt-0">
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <div class="rm-number">1</div>
+            <div class="rm-card">
+              <div class="rm-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="rm-content">
+                <h4>Halaman Utama</h4>
+                <p>Tekan tombol "Mulai Belajar" untuk masuk ke dashboard utama aplikasi.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="rm-number">2</div>
+            <div class="rm-card">
+              <div class="rm-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </div>
+              <div class="rm-content">
+                <h4>Pelajari Materi</h4>
+                <p>Pilih menu "Materi Teori" untuk mempelajari sejarah atom terlebih dahulu.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="rm-number">3</div>
+            <div class="rm-card">
+              <div class="rm-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="rm-content">
+                <h4>Buka Menu AR</h4>
+                <p>Setelah memahami materi, buka fitur "WebAR Viewer".</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="rm-number">4</div>
+            <div class="rm-card">
+              <div class="rm-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
+              <div class="rm-content">
+                <h4>Pilih Objek AR</h4>
+                <p>Pilih jenis atom yang ingin divisualisasikan dari menu yang muncul.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="roadmap-item">
+            <div class="rm-number">5</div>
+            <div class="rm-card">
+              <div class="rm-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div class="rm-content">
+                <h4>Eksplorasi 3D</h4>
+                <p>Amati objek AR menggunakan kamera. (Fitur ini sedang dalam pengembangan).</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="bottom-spacer"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/router.js"></script>
+</body>
+</html>

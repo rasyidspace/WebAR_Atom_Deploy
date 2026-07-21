@@ -1,0 +1,175 @@
+[
+  {
+    "id": "dalton",
+    "name": "Model Atom Dalton",
+    "subtitle": "Bola Pejal Tak Terbagi",
+    "description": "Model atom pertama yang menyatakan bahwa atom merupakan partikel terkecil yang tidak dapat dibagi lagi.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"8\"/></svg>",
+    "introduction": "John Dalton mengemukakan teori atom pertama secara ilmiah yang didasarkan pada data eksperimen, mengubah gagasan filosofis kuno menjadi sains.",
+    "characteristics": [
+      "Atom adalah partikel terkecil pembentuk materi.",
+      "Atom tidak dapat diciptakan, dimusnahkan, atau dibagi lagi.",
+      "Atom dari unsur yang sama memiliki sifat dan massa yang identik.",
+      "Senyawa terbentuk dari gabungan atom-atom dengan perbandingan rasio bilangan bulat sederhana."
+    ],
+    "advantages": [
+      "Mampu menjelaskan Hukum Kekekalan Massa (Lavoisier).",
+      "Mampu menjelaskan Hukum Perbandingan Tetap (Proust)."
+    ],
+    "limitations": [
+      "Tidak menyadari adanya partikel subatomik (proton, elektron, neutron).",
+      "Tidak bisa menjelaskan sifat kelistrikan materi.",
+      "Asumsi bahwa atom suatu unsur pasti identik ternyata keliru setelah ditemukannya isotop."
+    ],
+    "timeline": "1803",
+    "funFact": "Dalton sebenarnya mengusulkan lambang unsur pertama yang berbentuk lingkaran dengan simbol khusus di dalamnya, jauh sebelum sistem huruf modern (seperti H, O, C) ditemukan oleh Berzelius!",
+    "thumbnail": "assets/images/dalton.png",
+    "model": "assets/models/dalton.glb",
+    "scale": [1, 1, 1],
+    "rotation": [0, 0, 0],
+    "position": [0, 0, 0],
+    "information": {
+      "atomicNumber": "N/A",
+      "proton": "Belum Ditemukan",
+      "electron": "Belum Ditemukan",
+      "neutron": "Belum Ditemukan"
+    }
+  },
+  {
+    "id": "thomson",
+    "name": "Model Atom Thomson",
+    "subtitle": "Roti Kismis",
+    "description": "Dikenal sebagai model roti kismis, menggambarkan elektron tersebar dalam bola bermuatan positif.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"10\" cy=\"10\" r=\"1\" fill=\"currentColor\"/><circle cx=\"14\" cy=\"14\" r=\"1\" fill=\"currentColor\"/><circle cx=\"14\" cy=\"9\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9\" cy=\"14\" r=\"1\" fill=\"currentColor\"/></svg>",
+    "introduction": "J.J. Thomson menemukan elektron menggunakan tabung sinar katoda, yang membantah teori Dalton bahwa atom tidak dapat dibagi lagi.",
+    "characteristics": [
+      "Atom berbentuk bola pejal padat yang bermuatan positif.",
+      "Elektron bermuatan negatif tersebar merata di dalam bola positif tersebut.",
+      "Sering disebut sebagai 'Model Roti Kismis' (Plum Pudding Model)."
+    ],
+    "advantages": [
+      "Membuktikan keberadaan partikel subatomik pertama yaitu elektron.",
+      "Mampu menjelaskan bahwa atom secara keseluruhan bersifat netral."
+    ],
+    "limitations": [
+      "Tidak bisa menjelaskan letak pasti elektron dalam atom.",
+      "Tidak memiliki konsep inti atom (nukleus)."
+    ],
+    "timeline": "1897",
+    "funFact": "J.J. Thomson memenangkan Hadiah Nobel Fisika pada tahun 1906 berkat penemuan elektron. Ironisnya, putranya George Paget Thomson juga memenangkan Nobel karena membuktikan elektron bisa bersifat sebagai gelombang!",
+    "thumbnail": "assets/images/thomson.png",
+    "model": "assets/models/thomson.glb",
+    "scale": [1.5, 1.5, 1.5],
+    "rotation": [0, 0.5, 0],
+    "position": [0, 0.1, 0],
+    "information": {
+      "atomicNumber": "N/A",
+      "proton": "Tersebar (Massa Positif)",
+      "electron": "Tersebar secara acak",
+      "neutron": "Belum Ditemukan"
+    }
+  },
+  {
+    "id": "rutherford",
+    "name": "Model Atom Rutherford",
+    "subtitle": "Penemuan Inti Atom",
+    "description": "Menemukan inti atom yang kecil dan padat, dengan elektron yang bergerak mengelilinginya.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><ellipse cx=\"12\" cy=\"12\" rx=\"4\" ry=\"10\" transform=\"rotate(45 12 12)\"/><ellipse cx=\"12\" cy=\"12\" rx=\"4\" ry=\"10\" transform=\"rotate(-45 12 12)\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"currentColor\"/></svg>",
+    "introduction": "Ernest Rutherford menemukan keberadaan inti atom melalui eksperimen legendaris penembakan partikel alfa pada lempeng emas tipis.",
+    "characteristics": [
+      "Atom sebagian besar terdiri dari ruang hampa.",
+      "Terdapat inti atom bermuatan positif yang sangat padat dan masif di pusat atom.",
+      "Elektron bergerak mengelilingi inti atom pada jarak yang cukup jauh, seperti planet mengelilingi matahari."
+    ],
+    "advantages": [
+      "Berhasil menemukan konsep inti atom (nukleus).",
+      "Mampu menjelaskan mengapa mayoritas sinar alfa diteruskan tanpa hambatan pada eksperimen lempeng emas."
+    ],
+    "limitations": [
+      "Bertentangan dengan hukum fisika klasik Maxwell: elektron yang bergerak melingkar seharusnya memancarkan energi, kehabisan tenaga, lalu jatuh ke inti.",
+      "Tidak dapat menjelaskan spektrum garis atom hidrogen."
+    ],
+    "timeline": "1911",
+    "funFact": "Rutherford sangat terkejut saat partikel alfa miliknya memantul kembali dari lempeng emas. Ia mendeskripsikannya: 'Ini sama mustahilnya seperti menembakkan meriam 15 inci ke selembar kertas tisu, lalu pelurunya memantul kembali mengenai Anda!'",
+    "thumbnail": "assets/images/rutherford.png",
+    "model": "assets/models/rutherford.glb",
+    "scale": [2, 2, 2],
+    "rotation": [0, 0, 0],
+    "position": [0, 0, 0],
+    "information": {
+      "atomicNumber": "N/A",
+      "proton": "Berkumpul di Inti Atom",
+      "electron": "Mengorbit Inti",
+      "neutron": "Belum Ditemukan"
+    }
+  },
+  {
+    "id": "bohr",
+    "name": "Model Atom Niels Bohr",
+    "subtitle": "Orbit Stasioner",
+    "description": "Menjelaskan bahwa elektron bergerak pada lintasan tertentu (kulit atom) dengan tingkat energi yang stabil.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"2\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"18\" cy=\"12\" r=\"1.5\" fill=\"currentColor\"/></svg>",
+    "introduction": "Niels Bohr memperbaiki model Rutherford dengan menerapkan teori kuantum Planck untuk menjelaskan kestabilan orbit elektron.",
+    "characteristics": [
+      "Elektron mengorbit inti atom pada lintasan stasioner tertentu (kulit atom) tanpa memancarkan energi.",
+      "Setiap lintasan memiliki tingkat energi yang spesifik.",
+      "Elektron dapat berpindah orbit dengan menyerap (eksitasi) atau memancarkan (de-eksitasi) energi dalam bentuk foton cahaya."
+    ],
+    "advantages": [
+      "Mampu menjelaskan mengapa elektron tidak jatuh ke inti atom, memecahkan masalah model Rutherford.",
+      "Berhasil menjelaskan spektrum emisi atom hidrogen dengan sangat akurat."
+    ],
+    "limitations": [
+      "Hanya akurat untuk atom atau ion yang memiliki satu elektron (seperti H, He+).",
+      "Tidak dapat memprediksi spektrum unsur yang memiliki elektron majemuk."
+    ],
+    "timeline": "1913",
+    "funFact": "Selama Perang Dunia II, Bohr menyembunyikan medali Nobel emas milik dua fisikawan Yahudi dengan melarutkannya ke dalam cairan asam kuat (aqua regia) agar tidak disita Nazi. Cairan itu disimpan di lab, dan setelah perang, emasnya diekstraksi kembali untuk dicetak ulang menjadi medali!",
+    "thumbnail": "assets/images/bohr.png",
+    "model": "assets/models/bohr.glb",
+    "scale": [1, 1, 1],
+    "rotation": [0.2, 0.5, 0],
+    "position": [0, 0, 0],
+    "information": {
+      "atomicNumber": "1 (Simulasi Hidrogen)",
+      "proton": "Terdapat di Inti",
+      "electron": "Berada pada Orbit Stasioner",
+      "neutron": "Terikat di Inti"
+    }
+  },
+  {
+    "id": "quantum",
+    "name": "Mekanika Kuantum",
+    "subtitle": "Awan Probabilitas Elektron",
+    "description": "Model modern yang menggunakan konsep probabilitas (awan elektron) untuk menentukan posisi elektron.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\" stroke-dasharray=\"2 2\"/></svg>",
+    "introduction": "Model Mekanika Kuantum, dikembangkan oleh ilmuwan seperti Schrödinger dan Heisenberg, adalah representasi atom paling akurat yang kita miliki saat ini.",
+    "characteristics": [
+      "Posisi dan momentum elektron tidak dapat ditentukan secara pasti secara bersamaan (Prinsip Ketidakpastian Heisenberg).",
+      "Elektron tidak bergerak dalam lintasan melingkar yang kaku.",
+      "Elektron bergerak dalam ruang probabilitas tiga dimensi yang disebut orbital (atau awan elektron)."
+    ],
+    "advantages": [
+      "Berlaku untuk semua jenis atom dan molekul.",
+      "Mampu menjelaskan pembelahan garis spektrum akibat medan magnet (Efek Zeeman).",
+      "Menjadi fondasi bagi kimia komputasi modern."
+    ],
+    "limitations": [
+      "Model matematisnya sangat abstrak dan rumit.",
+      "Sulit divisualisasikan dalam bentuk fisik nyata tanpa menggunakan grafik probabilitas yang kompleks."
+    ],
+    "timeline": "1926",
+    "funFact": "Persamaan gelombang Schrödinger yang mendasari model ini terkenal sangat rumit, hingga para mahasiswa kimia sering bergurau bahwa hanya Schrödinger dan kucingnya yang benar-benar memahaminya!",
+    "thumbnail": "assets/images/quantum.png",
+    "model": "assets/models/quantum.glb",
+    "scale": [1.5, 1.5, 1.5],
+    "rotation": [0, 0, 0],
+    "position": [0, 0, 0],
+    "information": {
+      "atomicNumber": "Bervariasi",
+      "proton": "Terdapat di Inti (Nukleus)",
+      "electron": "Berada di dalam Orbital S/P/D/F",
+      "neutron": "Terdapat di Inti (Nukleus)"
+    }
+  }
+]

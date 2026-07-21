@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ATOM AR Learning - WebAR Viewer</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <div class="app-container ar-wrapper">
+    
+    <!-- 1. PREPARATION STATE -->
+    <section id="ar-state-prep" class="ar-state active">
+      <div class="prep-header">
+        <button class="btn-icon back-btn" onclick="window.location.href='play.html'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2 id="prep-title" style="font-size: 20px;">Model Atom</h2>
+      </div>
+      
+      <div class="prep-hero">
+        <svg class="prep-illustration" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+          <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2"/>
+          <circle cx="12" cy="10" r="3"/>
+          <path d="M9 10a3 3 0 0 1 6 0"/>
+        </svg>
+        
+        <div class="prep-card">
+          <h3 class="prep-card-title">Persiapkan Pengalaman AR</h3>
+          <p style="font-size: 14px; color: var(--text-light);">Gunakan perangkat pada ruangan yang memiliki pencahayaan cukup. Pastikan tersedia permukaan datar seperti meja atau lantai untuk meletakkan model atom.</p>
+          
+          <ul class="checklist">
+            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Kamera aktif</li>
+            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Cahaya cukup</li>
+            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Permukaan datar</li>
+            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Perangkat mendukung WebXR</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="prep-bottom">
+        <button class="btn btn-primary w-100" id="btn-start-ar" onclick="startLoadingAR()">
+          Mulai AR
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. LOADING STATE -->
+    <section id="ar-state-loading" class="ar-state">
+      <div class="loading-state-content">
+        <svg viewBox="0 0 200 200" width="80" height="80" class="hero-atom-icon" style="margin-bottom: 24px;">
+          <g stroke="var(--primary)" stroke-width="6" fill="none" stroke-linecap="round">
+            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(30 100 100)" opacity="0.8"/>
+            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(90 100 100)" opacity="0.8"/>
+            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(150 100 100)" opacity="0.8"/>
+          </g>
+          <circle cx="100" cy="100" r="16" fill="var(--primary)"/>
+        </svg>
+        <div class="loading-spinner-large"></div>
+        <div class="loading-status" id="loading-text">Preparing AR Experience...</div>
+        <p style="font-size: 14px; color: var(--text-light);">Memuat aset 3D dan Engine WebXR</p>
+      </div>
+    </section>
+
+    <!-- 3. SCANNING STATE -->
+    <section id="ar-state-scanning" class="ar-state camera-state">
+      <div class="camera-overlay">
+        <h3 style="margin-bottom: 40px;">Mendeteksi Permukaan...</h3>
+        <div class="scan-animation">
+          <div class="scan-circle"></div>
+          <div class="scan-circle"></div>
+          <div class="scan-circle"></div>
+        </div>
+        <div class="hint-card">
+          <p style="font-weight: 600; margin-bottom: 4px;">Gerakkan perlahan</p>
+          <p style="font-size: 14px; opacity: 0.8;">Cari permukaan datar & terang</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FOUND STATE -->
+    <section id="ar-state-found" class="ar-state camera-state">
+      <div class="camera-overlay">
+        <div class="success-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 style="margin-bottom: 8px;">Permukaan Ditemukan!</h3>
+        <p style="margin-bottom: 40px; opacity: 0.8;">Ketuk "Lanjutkan" untuk memunculkan model.</p>
+        
+        <button class="btn btn-primary" onclick="showViewer()">
+          Lanjutkan
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. VIEWER STATE (FUTURE 3D CANVAS HERE) -->
+    <section id="ar-state-viewer" class="ar-state camera-state" style="background: var(--background); color: var(--text);">
+      <!-- Three.js Containers -->
+      <div id="ar-container" style="position: absolute; top:0; left:0; width:100%; height:100%;"></div>
+      <canvas id="three-canvas" style="position: absolute; top:0; left:0; width:100%; height:100%; touch-action: none;"></canvas>
+      <div id="reticle"></div>
+      <div id="loading-overlay"></div>
+      <div id="ui-overlay"></div>
+      <div id="interaction-panel"></div>
+      <div id="hotspot-layer"></div>
+
+      <!-- Floating UI -->
+      <div class="floating-ui">
+        <div class="floating-ui-top">
+          <button class="btn-icon glass-btn" onclick="alert('Keluar dari AR') || (window.location.href='play.html')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn-icon glass-btn" onclick="resetARCamera()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="btn-icon glass-btn" onclick="toggleBottomSheet()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="floating-ui-bottom">
+          <button class="btn-icon glass-btn" onclick="alert('Fitur Screenshot akan tersedia saat 3D aktif!')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Sheet -->
+      <div id="bottom-sheet" class="bottom-sheet">
+        <div class="sheet-drag-handle" onclick="toggleBottomSheet()"></div>
+        <div class="sheet-content">
+          <h3 id="bs-title" style="color: var(--primary); margin-bottom: 4px;">Model Atom</h3>
+          <p id="bs-subtitle" style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Subtitle</p>
+          <p id="bs-desc" style="font-size: 14px; line-height: 1.5; color: var(--text-light);">Deskripsi</p>
+          
+          <div class="info-grid">
+            <div class="info-grid-item">
+              <span>Proton</span>
+              <strong id="bs-proton">-</strong>
+            </div>
+            <div class="info-grid-item">
+              <span>Elektron</span>
+              <strong id="bs-electron">-</strong>
+            </div>
+            <div class="info-grid-item">
+              <span>Neutron</span>
+              <strong id="bs-neutron">-</strong>
+            </div>
+            <div class="info-grid-item">
+              <span>Nomor Atom</span>
+              <strong id="bs-atomic">-</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AR MODAL (FALLBACK IF NO ID) -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
+    <div id="ar-modal" class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Pilih Visualisasi</h3>
+        <button class="btn-icon" onclick="closeModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="model-list" id="modal-model-list">
+        <!-- Rendered by js -->
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script src="js/main.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/router.js"></script>
+  
+  <!-- AR Logic as ES Module -->
+  <script type="module" src="js/ar.js"></script>
+</body>
+</html>

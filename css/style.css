@@ -1,0 +1,62 @@
+:root {
+  /* Colors */
+  --primary: #C46A2D;
+  --secondary: #E89B52;
+  --accent: #F5C47A;
+  --background: #FFFBF5;
+  --surface: #F9F2E8;
+  --surface-alt: #F1E5D1;
+  --text: #4A3728;
+  --text-light: #7A6352;
+  --white: #FFFFFF;
+  
+  /* Typography Sizes */
+  --text-hero: 32px;
+  --text-section: 24px;
+  --text-card: 18px;
+  --text-body: 16px;
+  --text-caption: 14px;
+
+  /* Spacing & Borders */
+  --radius-btn: 12px;
+  --radius-card: 16px;
+  --radius-modal: 20px;
+  --radius-nav: 18px;
+  
+  /* Subtle Shadows for MD3 feel */
+  --shadow-sm: 0 2px 8px rgba(74, 55, 40, 0.04);
+  --shadow-md: 0 4px 16px rgba(74, 55, 40, 0.08);
+  --shadow-lg: 0 8px 32px rgba(74, 55, 40, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #E2DFD8; /* Desktop background */
+  color: var(--text);
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, .btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+}
+
+p {
+  font-size: var(--text-body);
+  color: var(--text-light);
+}
+
+a {
+  text-decoration: none;
+}

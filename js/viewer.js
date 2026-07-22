@@ -47,7 +47,7 @@ async function initViewer() {
 
         // 5. Setup Three.js
         threeScene = new ThreeScene('three-canvas');
-        modelLoader = new ModelLoader(threeScene.scene);
+        modelLoader = new ModelLoader(threeScene);
 
         // Setup OrbitControls
         controls = new OrbitControls(threeScene.camera, threeScene.renderer.domElement);

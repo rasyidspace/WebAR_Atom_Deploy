@@ -25,7 +25,7 @@ async function initViewer() {
     };
     
     document.getElementById('btn-lihat-ar').onclick = () => {
-        window.location.href = `ar.html?id=${atomId}`;
+        window.location.href = `ar.html?atom=${atomId}`;
     };
 
     // 3. Fetch Data

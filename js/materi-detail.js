@@ -36,9 +36,9 @@ function renderDetail(atom) {
     const actionBar = document.getElementById('bottom-action-bar');
     const btnAr = document.getElementById('btn-lihat-ar');
     
-    // Configure AR button
+    // Configure Preview 3D button
     btnAr.onclick = () => {
-        window.location.href = `ar.html?id=${atom.id}`;
+        window.location.href = `viewer.html?id=${atom.id}`;
     };
     
     // Build Lists

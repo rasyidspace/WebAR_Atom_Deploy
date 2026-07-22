@@ -14,197 +14,184 @@
   <link rel="stylesheet" href="css/mobile.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/pages.css">
+
+  <style>
+    /* MindAR Specific Styles */
+    .mindar-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .overlay-ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .top-bar-ar {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      gap: 16px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+      pointer-events: auto;
+    }
+    
+    .top-bar-ar h2 {
+      color: white;
+      font-size: 18px;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .instruction-card {
+      margin: 20px auto 0;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      transition: opacity 0.3s ease;
+      max-width: 80%;
+    }
+    
+    .tips-card {
+      margin: auto auto 32px auto;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      padding: 16px;
+      border-radius: 16px;
+      color: white;
+      font-size: 14px;
+      max-width: 85%;
+    }
+    
+    .tips-card ul {
+      margin: 8px 0 0 0;
+      padding-left: 20px;
+    }
+    
+    /* Loading Screen */
+    .ar-loading-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--background);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    
+    .ar-loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .status-toast {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(200, 106, 42, 0.4);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .status-toast.visible {
+      opacity: 1;
+    }
+    
+    .status-toast.error {
+      background: #E03E3E;
+      box-shadow: 0 8px 24px rgba(224, 62, 62, 0.4);
+    }
+  </style>
 </head>
 <body>
 
-  <div class="app-container ar-wrapper">
-    
-    <!-- 1. PREPARATION STATE -->
-    <section id="ar-state-prep" class="ar-state active">
-      <div class="prep-header">
-        <button class="btn-icon back-btn" onclick="window.location.href='play.html'">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h2 id="prep-title" style="font-size: 20px;">Model Atom</h2>
-      </div>
-      
-      <div class="prep-hero">
-        <svg class="prep-illustration" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-          <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2"/>
-          <circle cx="12" cy="10" r="3"/>
-          <path d="M9 10a3 3 0 0 1 6 0"/>
-        </svg>
-        
-        <div class="prep-card">
-          <h3 class="prep-card-title">Persiapkan Pengalaman AR</h3>
-          <p style="font-size: 14px; color: var(--text-light);">Gunakan perangkat pada ruangan yang memiliki pencahayaan cukup. Pastikan tersedia permukaan datar seperti meja atau lantai untuk meletakkan model atom.</p>
-          
-          <ul class="checklist">
-            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Kamera aktif</li>
-            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Cahaya cukup</li>
-            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Permukaan datar</li>
-            <li><div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div> Perangkat mendukung WebXR</li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="prep-bottom" style="display: flex; gap: 12px;">
-        <button class="btn btn-outline w-50" id="btn-preview-3d" onclick="openViewer()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          Preview 3D
-        </button>
-        <button class="btn btn-primary w-50" id="btn-start-ar" onclick="startLoadingAR()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Mulai AR
-        </button>
-      </div>
-    </section>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="ar-loading-screen">
+    <div class="loading-spinner-large"></div>
+    <h3 style="margin-top: 24px; color: var(--primary);" id="loading-title">Menyiapkan AR...</h3>
+    <p style="color: var(--text-light); margin-top: 8px;" id="loading-desc">Memuat marker dan model 3D</p>
+    <button class="btn btn-primary" id="btn-retry" style="display: none; margin-top: 24px;" onclick="window.location.reload()">Coba Lagi</button>
+  </div>
 
-    <!-- 2. LOADING STATE -->
-    <section id="ar-state-loading" class="ar-state">
-      <div class="loading-state-content">
-        <svg viewBox="0 0 200 200" width="80" height="80" class="hero-atom-icon" style="margin-bottom: 24px;">
-          <g stroke="var(--primary)" stroke-width="6" fill="none" stroke-linecap="round">
-            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(30 100 100)" opacity="0.8"/>
-            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(90 100 100)" opacity="0.8"/>
-            <ellipse cx="100" cy="100" rx="40" ry="90" transform="rotate(150 100 100)" opacity="0.8"/>
-          </g>
-          <circle cx="100" cy="100" r="16" fill="var(--primary)"/>
-        </svg>
-        <div class="loading-spinner-large"></div>
-        <div class="loading-status" id="loading-text">Preparing AR Experience...</div>
-        <p style="font-size: 14px; color: var(--text-light);">Memuat aset 3D dan Engine WebXR</p>
-      </div>
-    </section>
+  <!-- MindAR Container -->
+  <div id="mindar-container" class="mindar-container"></div>
 
-    <!-- 3. SCANNING STATE -->
-    <section id="ar-state-scanning" class="ar-state camera-state">
-      <div class="camera-overlay">
-        <h3 style="margin-bottom: 40px;">Mendeteksi Permukaan...</h3>
-        <div class="scan-animation">
-          <div class="scan-circle"></div>
-          <div class="scan-circle"></div>
-          <div class="scan-circle"></div>
-        </div>
-        <div class="hint-card">
-          <p style="font-weight: 600; margin-bottom: 4px;">Gerakkan perlahan</p>
-          <p style="font-size: 14px; opacity: 0.8;">Cari permukaan datar & terang</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. FOUND STATE -->
-    <section id="ar-state-found" class="ar-state camera-state">
-      <div class="camera-overlay">
-        <div class="success-icon">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <h3 style="margin-bottom: 8px;">Permukaan Ditemukan!</h3>
-        <p style="margin-bottom: 40px; opacity: 0.8;">Ketuk "Lanjutkan" untuk memunculkan model.</p>
-        
-        <button class="btn btn-primary" onclick="showViewer()">
-          Lanjutkan
-        </button>
-      </div>
-    </section>
-
-    <!-- 5. VIEWER STATE (FUTURE 3D CANVAS HERE) -->
-    <section id="ar-state-viewer" class="ar-state camera-state" style="background: var(--background); color: var(--text);">
-      <!-- Three.js Containers -->
-      <div id="ar-container" style="position: absolute; top:0; left:0; width:100%; height:100%;"></div>
-      <canvas id="three-canvas" style="position: absolute; top:0; left:0; width:100%; height:100%; touch-action: none;"></canvas>
-      <div id="reticle"></div>
-      <div id="loading-overlay"></div>
-      <div id="ui-overlay"></div>
-      <div id="interaction-panel"></div>
-      <div id="hotspot-layer"></div>
-
-      <!-- Floating UI -->
-      <div class="floating-ui">
-        <div class="floating-ui-top">
-          <button class="btn-icon glass-btn" onclick="alert('Keluar dari AR') || (window.location.href='play.html')">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <div style="display: flex; gap: 12px;">
-            <a id="ios-ar-btn" rel="ar" href="#" class="btn-icon glass-btn" style="display: none;" title="Buka AR iOS">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-            </a>
-            <button class="btn-icon glass-btn" onclick="resetARCamera()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            </button>
-            <button class="btn-icon glass-btn" onclick="toggleBottomSheet()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="floating-ui-bottom">
-          <button class="btn-icon glass-btn" onclick="alert('Fitur Screenshot akan tersedia saat 3D aktif!')">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Bottom Sheet -->
-      <div id="bottom-sheet" class="bottom-sheet">
-        <div class="sheet-drag-handle" onclick="toggleBottomSheet()"></div>
-        <div class="sheet-content">
-          <h3 id="bs-title" style="color: var(--primary); margin-bottom: 4px;">Model Atom</h3>
-          <p id="bs-subtitle" style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Subtitle</p>
-          <p id="bs-desc" style="font-size: 14px; line-height: 1.5; color: var(--text-light);">Deskripsi</p>
-          
-          <div class="info-grid">
-            <div class="info-grid-item">
-              <span>Proton</span>
-              <strong id="bs-proton">-</strong>
-            </div>
-            <div class="info-grid-item">
-              <span>Elektron</span>
-              <strong id="bs-electron">-</strong>
-            </div>
-            <div class="info-grid-item">
-              <span>Neutron</span>
-              <strong id="bs-neutron">-</strong>
-            </div>
-            <div class="info-grid-item">
-              <span>Nomor Atom</span>
-              <strong id="bs-atomic">-</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AR MODAL (FALLBACK IF NO ID) -->
-    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
-    <div id="ar-modal" class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Pilih Visualisasi</h3>
-        <button class="btn-icon" onclick="closeModal()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="model-list" id="modal-model-list">
-        <!-- Rendered by js -->
-      </div>
+  <!-- AR UI Overlay -->
+  <div class="overlay-ui">
+    <div class="top-bar-ar">
+      <button class="btn-icon" style="background: rgba(255,255,255,0.2); color: white;" id="btn-back">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h2 id="ar-title">Model Atom</h2>
     </div>
+    
+    <div class="instruction-card" id="instruction-card">
+      Scan marker yang sesuai untuk menampilkan model atom.
+    </div>
+    
+    <div class="tips-card" id="tips-card">
+      <strong>Tips AR:</strong>
+      <ul>
+        <li>Pastikan marker terlihat jelas seluruhnya.</li>
+        <li>Gunakan pencahayaan ruangan yang cukup.</li>
+        <li>Jaga kamera tetap stabil saat memindai.</li>
+      </ul>
+    </div>
+  </div>
 
-  </div> <!-- End App Container -->
+  <!-- Status Toasts -->
+  <div id="toast-success" class="status-toast">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    Marker Terdeteksi
+  </div>
+  
+  <div id="toast-lost" class="status-toast error">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Marker tidak terlihat
+  </div>
 
-  <!-- Three.js Import Map -->
+  <!-- Import Maps -->
   <script type="importmap">
     {
       "imports": {
         "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+        "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
       }
     }
   </script>
 
-  <script src="js/main.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/router.js"></script>
-  
   <!-- AR Logic as ES Module -->
   <script type="module" src="js/ar.js"></script>
 </body>

@@ -1,14 +1,19 @@
 :root {
   /* Colors */
-  --primary: #C46A2D;
-  --secondary: #E89B52;
-  --accent: #F5C47A;
-  --background: #FFFBF5;
-  --surface: #F9F2E8;
-  --surface-alt: #F1E5D1;
-  --text: #4A3728;
-  --text-light: #7A6352;
+  --background: #FFF8EF;
+  --surface: #FFF3E4;
+  --primary: #C86A2A;
+  --primary-dark: #A9551E;
+  --text: #3B312B;
+  --text-light: #6E625A;
+  --border: #E8D8C3;
   --white: #FFFFFF;
+
+  /* Accent Colors */
+  --sage-green: #7EA174;
+  --sky-blue: #74B9E8;
+  --golden-yellow: #F2C94C;
+  --soft-purple: #9B8AFB;
   
   /* Typography Sizes */
   --text-hero: 32px;
@@ -23,10 +28,10 @@
   --radius-modal: 20px;
   --radius-nav: 18px;
   
-  /* Subtle Shadows for MD3 feel */
-  --shadow-sm: 0 2px 8px rgba(74, 55, 40, 0.04);
-  --shadow-md: 0 4px 16px rgba(74, 55, 40, 0.08);
-  --shadow-lg: 0 8px 32px rgba(74, 55, 40, 0.12);
+  /* Warm Shadows */
+  --shadow-sm: 0 2px 8px rgba(120, 70, 20, 0.10);
+  --shadow-md: 0 4px 16px rgba(120, 70, 20, 0.15);
+  --shadow-lg: 0 8px 32px rgba(120, 70, 20, 0.20);
 }
 
 * {

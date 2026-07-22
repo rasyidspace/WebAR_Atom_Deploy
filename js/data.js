@@ -22,7 +22,7 @@ function renderMateriCards(atomsData) {
     
     atomsData.forEach(atom => {
         const cardHtml = `
-        <div class="material-card">
+        <div class="material-card theme-${atom.id}">
           <div class="mc-header">
             <div class="mc-icon">
               ${atom.iconSvg}

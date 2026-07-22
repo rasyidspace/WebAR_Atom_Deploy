@@ -150,6 +150,23 @@
   margin-top: -4px;
 }
 
+/* Theme Accents for Cards */
+.theme-dalton { border-top: 4px solid var(--primary); }
+.theme-dalton .mc-icon { color: var(--primary); background: rgba(200, 106, 42, 0.15); }
+
+.theme-thomson { border-top: 4px solid var(--sage-green); }
+.theme-thomson .mc-icon { color: var(--sage-green); background: rgba(126, 161, 116, 0.15); }
+
+.theme-rutherford { border-top: 4px solid var(--sky-blue); }
+.theme-rutherford .mc-icon { color: var(--sky-blue); background: rgba(116, 185, 232, 0.15); }
+
+.theme-bohr { border-top: 4px solid var(--soft-purple); }
+.theme-bohr .mc-icon { color: var(--soft-purple); background: rgba(155, 138, 251, 0.15); }
+
+.theme-quantum { border-top: 4px solid var(--golden-yellow); }
+.theme-quantum .mc-icon { color: var(--golden-yellow); background: rgba(242, 201, 76, 0.15); }
+
+
 /* ==============================================
    ROADMAP (INSTRUCTIONS)
    ============================================== */

@@ -15,7 +15,7 @@ export class ThreeScene {
         // Camera
         this.camera = new THREE.PerspectiveCamera(
             45,
-            window.innerWidth / window.innerHeight,
+            this.canvas.parentElement.clientWidth / this.canvas.parentElement.clientHeight,
             0.1,
             100
         );
@@ -28,7 +28,7 @@ export class ThreeScene {
             alpha: false
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Clamp pixel ratio for mobile
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(this.canvas.parentElement.clientWidth, this.canvas.parentElement.clientHeight);
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.0;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -70,9 +70,10 @@ export class ThreeScene {
 
     setupResizeHandler() {
         window.addEventListener('resize', () => {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
+            if (!this.canvas.parentElement) return;
+            this.camera.aspect = this.canvas.parentElement.clientWidth / this.canvas.parentElement.clientHeight;
             this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setSize(this.canvas.parentElement.clientWidth, this.canvas.parentElement.clientHeight);
         });
     }
 

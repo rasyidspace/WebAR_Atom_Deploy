@@ -227,6 +227,17 @@ window.showViewer = function() {
     switchState('ar-state-viewer');
 }
 
+window.openViewer = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const atomId = urlParams.get('id');
+    if (atomId) {
+        window.location.href = `viewer.html?id=${atomId}`;
+    } else {
+        alert("Silakan pilih model atom terlebih dahulu.");
+        window.location.href = 'play.html';
+    }
+}
+
 let sheetOpen = false;
 window.toggleBottomSheet = function() {
     const sheet = document.getElementById('bottom-sheet');

@@ -1,7 +1,7 @@
 [
   {
     "id": "dalton",
-    "name": "Model Atom Dalton",
+    "name": "Teori Atom Dalton",
     "subtitle": "Bola Pejal Tak Terbagi",
     "description": "Model atom pertama yang menyatakan bahwa atom merupakan partikel terkecil yang tidak dapat dibagi lagi.",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"8\"/></svg>",
@@ -36,26 +36,58 @@
     }
   },
   {
+    "id": "penemuan-elektron",
+    "name": "Penemuan Elektron",
+    "subtitle": "Tabung Sinar Katoda",
+    "description": "Eksperimen yang membuktikan keberadaan partikel bermuatan negatif yang lebih kecil dari atom, yaitu elektron.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>",
+    "introduction": "Melalui eksperimen tabung sinar katoda, ilmuwan membuktikan bahwa atom bukanlah bagian terkecil, melainkan memiliki partikel penyusun bermuatan negatif yang disebut elektron.",
+    "characteristics": [
+      "Sinar katoda merambat lurus dari katoda menuju anoda.",
+      "Sinar ini dibelokkan oleh medan listrik dan medan magnet ke arah kutub positif.",
+      "Membuktikan bahwa materi mengandung partikel bermuatan negatif (elektron)."
+    ],
+    "advantages": [
+      "Mematahkan teori Dalton bahwa atom adalah bagian terkecil dan tidak dapat dibagi lagi.",
+      "Membuka jalan bagi penemuan struktur internal atom."
+    ],
+    "limitations": [
+      "Hanya menemukan elektron, belum bisa menjelaskan bagaimana elektron tersusun dalam atom yang netral."
+    ],
+    "timeline": "1897",
+    "funFact": "Peralatan tabung sinar katoda (CRT) ini akhirnya menjadi teknologi dasar di balik televisi tabung yang digunakan manusia selama lebih dari 70 tahun!",
+    "thumbnail": "assets/images/thomson.png",
+    "model": "assets/models/atom-thomson.glb",
+    "scale": [1.5, 1.5, 1.5],
+    "rotation": [0, 0.5, 0],
+    "position": [0, 0.1, 0],
+    "information": {
+      "atomicNumber": "N/A",
+      "proton": "Belum Teridentifikasi",
+      "electron": "Ditemukan",
+      "neutron": "Belum Ditemukan"
+    }
+  },
+  {
     "id": "thomson",
-    "name": "Model Atom Thomson",
+    "name": "Teori Atom Thomson",
     "subtitle": "Roti Kismis",
     "description": "Dikenal sebagai model roti kismis, menggambarkan elektron tersebar dalam bola bermuatan positif.",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"10\" cy=\"10\" r=\"1\" fill=\"currentColor\"/><circle cx=\"14\" cy=\"14\" r=\"1\" fill=\"currentColor\"/><circle cx=\"14\" cy=\"9\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9\" cy=\"14\" r=\"1\" fill=\"currentColor\"/></svg>",
-    "introduction": "J.J. Thomson menemukan elektron menggunakan tabung sinar katoda, yang membantah teori Dalton bahwa atom tidak dapat dibagi lagi.",
+    "introduction": "Setelah menemukan elektron, J.J. Thomson mengusulkan model atom yang bisa menjelaskan mengapa benda secara keseluruhan bersifat netral.",
     "characteristics": [
       "Atom berbentuk bola pejal padat yang bermuatan positif.",
       "Elektron bermuatan negatif tersebar merata di dalam bola positif tersebut.",
       "Sering disebut sebagai 'Model Roti Kismis' (Plum Pudding Model)."
     ],
     "advantages": [
-      "Membuktikan keberadaan partikel subatomik pertama yaitu elektron.",
       "Mampu menjelaskan bahwa atom secara keseluruhan bersifat netral."
     ],
     "limitations": [
       "Tidak bisa menjelaskan letak pasti elektron dalam atom.",
       "Tidak memiliki konsep inti atom (nukleus)."
     ],
-    "timeline": "1897",
+    "timeline": "1904",
     "funFact": "J.J. Thomson memenangkan Hadiah Nobel Fisika pada tahun 1906 berkat penemuan elektron. Ironisnya, putranya George Paget Thomson juga memenangkan Nobel karena membuktikan elektron bisa bersifat sebagai gelombang!",
     "thumbnail": "assets/images/thomson.png",
     "model": "assets/models/atom-thomson.glb",
@@ -70,27 +102,59 @@
     }
   },
   {
+    "id": "penemuan-inti",
+    "name": "Penemuan Inti Atom",
+    "subtitle": "Eksperimen Lempeng Emas",
+    "description": "Eksperimen yang membuktikan adanya inti atom bermuatan positif yang sangat padat di pusat atom.",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"currentColor\"/><path d=\"M2 12h8M14 12h8\"/></svg>",
+    "introduction": "Eksperimen penembakan partikel alfa pada lempeng emas tipis menghasilkan temuan yang mengejutkan, memutarbalikkan model Thomson.",
+    "characteristics": [
+      "Sebagian besar partikel alfa diteruskan lurus (menunjukkan ruang hampa besar di atom).",
+      "Sebagian kecil partikel alfa dibelokkan atau dipantulkan kembali.",
+      "Menunjukkan adanya konsentrasi massa yang sangat kecil, padat, dan positif di tengah atom."
+    ],
+    "advantages": [
+      "Menemukan keberadaan nukleus (inti atom).",
+      "Memberikan gambaran yang lebih realistis tentang kepadatan ruang atom."
+    ],
+    "limitations": [
+      "Hanya menjelaskan inti, belum menjelaskan posisi orbit elektron yang stabil secara fisika klasik."
+    ],
+    "timeline": "1909",
+    "funFact": "Rutherford sangat terkejut saat partikel alfa miliknya memantul kembali dari lempeng emas. Ia mendeskripsikannya: 'Ini sama mustahilnya seperti menembakkan meriam 15 inci ke selembar kertas tisu, lalu pelurunya memantul kembali mengenai Anda!'",
+    "thumbnail": "assets/images/rutherford.png",
+    "model": "assets/models/atom-rutherford.glb",
+    "scale": [2, 2, 2],
+    "rotation": [0, 0, 0],
+    "position": [0, 0, 0],
+    "information": {
+      "atomicNumber": "N/A",
+      "proton": "Diidentifikasi di Inti",
+      "electron": "Belum Stasioner",
+      "neutron": "Belum Ditemukan"
+    }
+  },
+  {
     "id": "rutherford",
-    "name": "Model Atom Rutherford",
-    "subtitle": "Penemuan Inti Atom",
-    "description": "Menemukan inti atom yang kecil dan padat, dengan elektron yang bergerak mengelilinginya.",
+    "name": "Teori Atom Rutherford",
+    "subtitle": "Model Tata Surya",
+    "description": "Menggambarkan atom seperti tata surya mini, dengan inti di tengah dan elektron mengorbitinya.",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><ellipse cx=\"12\" cy=\"12\" rx=\"4\" ry=\"10\" transform=\"rotate(45 12 12)\"/><ellipse cx=\"12\" cy=\"12\" rx=\"4\" ry=\"10\" transform=\"rotate(-45 12 12)\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"currentColor\"/></svg>",
-    "introduction": "Ernest Rutherford menemukan keberadaan inti atom melalui eksperimen legendaris penembakan partikel alfa pada lempeng emas tipis.",
+    "introduction": "Berdasarkan eksperimen lempeng emas, Rutherford merumuskan model atom barunya yang menggantikan Roti Kismis Thomson.",
     "characteristics": [
       "Atom sebagian besar terdiri dari ruang hampa.",
       "Terdapat inti atom bermuatan positif yang sangat padat dan masif di pusat atom.",
       "Elektron bergerak mengelilingi inti atom pada jarak yang cukup jauh, seperti planet mengelilingi matahari."
     ],
     "advantages": [
-      "Berhasil menemukan konsep inti atom (nukleus).",
-      "Mampu menjelaskan mengapa mayoritas sinar alfa diteruskan tanpa hambatan pada eksperimen lempeng emas."
+      "Berhasil menemukan konsep inti atom (nukleus)."
     ],
     "limitations": [
       "Bertentangan dengan hukum fisika klasik Maxwell: elektron yang bergerak melingkar seharusnya memancarkan energi, kehabisan tenaga, lalu jatuh ke inti.",
       "Tidak dapat menjelaskan spektrum garis atom hidrogen."
     ],
     "timeline": "1911",
-    "funFact": "Rutherford sangat terkejut saat partikel alfa miliknya memantul kembali dari lempeng emas. Ia mendeskripsikannya: 'Ini sama mustahilnya seperti menembakkan meriam 15 inci ke selembar kertas tisu, lalu pelurunya memantul kembali mengenai Anda!'",
+    "funFact": "Model planetarium Rutherford menjadi ikon pop culture untuk sains atom, sering kali muncul sebagai logo komik, film sci-fi, atau perusahaan teknologi, meskipun secara fisika kurang akurat!",
     "thumbnail": "assets/images/rutherford.png",
     "model": "assets/models/atom-rutherford.glb",
     "scale": [2, 2, 2],
@@ -105,7 +169,7 @@
   },
   {
     "id": "bohr",
-    "name": "Model Atom Niels Bohr",
+    "name": "Teori Atom Niels Bohr",
     "subtitle": "Orbit Stasioner",
     "description": "Menjelaskan bahwa elektron bergerak pada lintasan tertentu (kulit atom) dengan tingkat energi yang stabil.",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"2\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"18\" cy=\"12\" r=\"1.5\" fill=\"currentColor\"/></svg>",
@@ -124,7 +188,7 @@
       "Tidak dapat memprediksi spektrum unsur yang memiliki elektron majemuk."
     ],
     "timeline": "1913",
-    "funFact": "Selama Perang Dunia II, Bohr menyembunyikan medali Nobel emas milik dua fisikawan Yahudi dengan melarutkannya ke dalam cairan asam kuat (aqua regia) agar tidak disita Nazi. Cairan itu disimpan di lab, dan setelah perang, emasnya diekstraksi kembali untuk dicetak ulang menjadi medali!",
+    "funFact": "Selama Perang Dunia II, Bohr menyembunyikan medali Nobel emas milik dua fisikawan Yahudi dengan melarutkannya ke dalam cairan asam kuat (aqua regia) agar tidak disita Nazi. Setelah perang, emasnya diekstraksi kembali untuk dicetak ulang menjadi medali!",
     "thumbnail": "assets/images/bohr.png",
     "model": "assets/models/atom-nielsbohr.glb",
     "scale": [1, 1, 1],
@@ -139,7 +203,7 @@
   },
   {
     "id": "quantum",
-    "name": "Mekanika Kuantum",
+    "name": "Teori Atom Mekanika Kuantum",
     "subtitle": "Awan Probabilitas Elektron",
     "description": "Model modern yang menggunakan konsep probabilitas (awan elektron) untuk menentukan posisi elektron.",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\" stroke-dasharray=\"2 2\"/></svg>",

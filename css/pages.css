@@ -154,8 +154,14 @@
 .theme-dalton { border-top: 4px solid var(--primary); }
 .theme-dalton .mc-icon { color: var(--primary); background: rgba(200, 106, 42, 0.15); }
 
+.theme-penemuan-elektron { border-top: 4px solid var(--sage-green); }
+.theme-penemuan-elektron .mc-icon { color: var(--sage-green); background: rgba(126, 161, 116, 0.15); }
+
 .theme-thomson { border-top: 4px solid var(--sage-green); }
 .theme-thomson .mc-icon { color: var(--sage-green); background: rgba(126, 161, 116, 0.15); }
+
+.theme-penemuan-inti { border-top: 4px solid var(--sky-blue); }
+.theme-penemuan-inti .mc-icon { color: var(--sky-blue); background: rgba(116, 185, 232, 0.15); }
 
 .theme-rutherford { border-top: 4px solid var(--sky-blue); }
 .theme-rutherford .mc-icon { color: var(--sky-blue); background: rgba(116, 185, 232, 0.15); }

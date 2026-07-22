@@ -159,21 +159,16 @@ window.startLoadingAR = async function() {
         };
 
     } else if (isIOS && currentAtomData) {
-        // Fallback to Apple AR Quick Look for iOS
-        textEl.textContent = "Membuka Apple AR Quick Look...";
+        // Fallback to 3D Viewer but expose Apple AR Quick Look button
+        textEl.textContent = "Menyiapkan Model untuk iOS...";
         
-        const a = document.createElement('a');
-        a.rel = 'ar';
-        // iOS 15+ supports GLB in Quick Look, but USDZ is preferred. We fallback to GLB if USDZ is missing.
-        a.href = currentAtomData.modelUsdz || currentAtomData.model;
-        
-        const img = document.createElement('img');
-        a.appendChild(img);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        const iosBtn = document.getElementById('ios-ar-btn');
+        if (iosBtn) {
+            iosBtn.href = currentAtomData.modelUsdz || currentAtomData.model;
+            iosBtn.style.display = 'flex';
+        }
 
-        // Continue to 3D Viewer in the background so when they close AR they see the 3D viewer
+        // Continue to 3D Viewer
         interactionManager.setARMode(false);
         threeScene.scene.background = new THREE.Color('#FFFBF5');
         modelLoader.onLoadComplete = () => {

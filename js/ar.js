@@ -99,9 +99,9 @@ function switchState(stateId) {
 window.startLoadingAR = async function() {
     switchState('ar-state-loading');
     const textEl = document.getElementById('loading-text');
-    textEl.textContent = "Checking WebXR Support...";
+    textEl.textContent = "Checking AR Support...";
 
-    // 1. Check WebXR Capability
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isXRSupported = await WebXRManager.checkSupport();
 
     if (!threeScene) {
@@ -158,9 +158,35 @@ window.startLoadingAR = async function() {
             threeScene.startLoop();
         };
 
+    } else if (isIOS && currentAtomData) {
+        // Fallback to Apple AR Quick Look for iOS
+        textEl.textContent = "Membuka Apple AR Quick Look...";
+        
+        const a = document.createElement('a');
+        a.rel = 'ar';
+        // iOS 15+ supports GLB in Quick Look, but USDZ is preferred. We fallback to GLB if USDZ is missing.
+        a.href = currentAtomData.modelUsdz || currentAtomData.model;
+        
+        const img = document.createElement('img');
+        a.appendChild(img);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Continue to 3D Viewer in the background so when they close AR they see the 3D viewer
+        interactionManager.setARMode(false);
+        threeScene.scene.background = new THREE.Color('#FFFBF5');
+        modelLoader.onLoadComplete = () => {
+            setTimeout(() => {
+                switchState('ar-state-viewer');
+                interactionManager.setTargetModel(modelLoader.currentModel);
+            }, 1000);
+        };
+        threeScene.startLoop();
+
     } else {
-        // Fallback to 3D Viewer Mode
-        textEl.textContent = "WebXR Unavailable. Falling back to 3D Viewer...";
+        // Fallback to 3D Viewer Mode for unsupported devices
+        textEl.textContent = "AR Camera tidak didukung. Membuka 3D Viewer...";
         interactionManager.setARMode(false);
         threeScene.scene.background = new THREE.Color('#FFFBF5');
         

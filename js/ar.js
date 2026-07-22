@@ -147,16 +147,39 @@ window.startLoadingAR = async function() {
         });
         
         threeScene.addUpdatable(xrManager);
+        threeScene.scene.background = null; // transparent for AR
 
-        modelLoader.onLoadComplete = () => {
-            textEl.textContent = "Starting AR Session...";
-            // We need a user gesture to start XR, but since this was triggered by startLoadingAR button click,
-            // the promise chain might have broken the user gesture requirement. 
-            // In modern browsers, we can start it if the chain wasn't too long.
-            threeScene.scene.background = null; // transparent for AR
-            xrManager.startSession(document.body);
+        // We MUST request the session immediately so Chrome doesn't drop the user gesture context!
+        const success = await xrManager.startSession(document.body);
+
+        if (success) {
             threeScene.startLoop();
-        };
+            
+            // Now load the model in the background
+            modelLoader.onLoadComplete = () => {
+                if (modelLoader.currentModel && !xrManager.modelPlaced) {
+                    // Hide the model far away until the user places it on a surface
+                    modelLoader.currentModel.matrixAutoUpdate = true;
+                    modelLoader.currentModel.position.set(0, -1000, 0);
+                }
+            };
+            if (currentAtomData) modelLoader.loadModel(currentAtomData.model, currentAtomData);
+            
+        } else {
+            // Failed to start WebXR (e.g. Permission Denied or Chrome error)
+            textEl.textContent = "Akses Kamera Ditolak. Membuka 3D Viewer...";
+            interactionManager.setARMode(false);
+            threeScene.scene.background = new THREE.Color('#FFFBF5');
+            
+            modelLoader.onLoadComplete = () => {
+                setTimeout(() => {
+                    switchState('ar-state-viewer');
+                    interactionManager.setTargetModel(modelLoader.currentModel);
+                }, 1000);
+            };
+            threeScene.startLoop();
+            if (currentAtomData) modelLoader.loadModel(currentAtomData.model, currentAtomData);
+        }
 
     } else if (isIOS && currentAtomData) {
         // Fallback to 3D Viewer but expose Apple AR Quick Look button
@@ -178,6 +201,7 @@ window.startLoadingAR = async function() {
             }, 1000);
         };
         threeScene.startLoop();
+        if (currentAtomData) modelLoader.loadModel(currentAtomData.model, currentAtomData);
 
     } else {
         // Fallback to 3D Viewer Mode for unsupported devices
@@ -193,11 +217,7 @@ window.startLoadingAR = async function() {
         };
         
         threeScene.startLoop();
-    }
-
-    // Begin Loading the model
-    if (currentAtomData) {
-        modelLoader.loadModel(currentAtomData.model, currentAtomData);
+        if (currentAtomData) modelLoader.loadModel(currentAtomData.model, currentAtomData);
     }
 }
 

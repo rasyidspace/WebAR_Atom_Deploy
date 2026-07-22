@@ -85,10 +85,12 @@ export class WebXRManager {
             await this.renderer.xr.setSession(session);
             this.uiCallbacks.onSessionStarted();
             this.uiCallbacks.onSurfaceSearching();
+            return true;
             
         } catch (error) {
             console.error("Failed to start WebXR session:", error);
-            alert("Gagal memulai sesi AR. Pastikan izin kamera diberikan.");
+            // alert("Gagal memulai sesi AR. Pastikan izin kamera diberikan.");
+            return false;
         }
     }
 

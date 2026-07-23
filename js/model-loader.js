@@ -89,6 +89,9 @@ export class ModelLoader {
         // Setup Animations
         if (gltf.animations && gltf.animations.length > 0) {
             this.mixer = new THREE.AnimationMixer(model);
+            // Default timeScale to play at 20 FPS instead of 30 FPS
+            this.mixer.timeScale = 20 / 30;
+            
             const action = this.mixer.clipAction(gltf.animations[0]);
             action.setLoop(THREE.LoopRepeat, Infinity);
             action.play();
@@ -187,7 +190,8 @@ export class ModelLoader {
 
     toggleAnimation() {
         if (this.mixer) {
-            this.mixer.timeScale = this.mixer.timeScale > 0 ? 0 : 1;
+            // Toggle between 0 and 20/30 (approx 0.66) to play at 20 FPS
+            this.mixer.timeScale = this.mixer.timeScale > 0 ? 0 : (20 / 30);
             return this.mixer.timeScale > 0;
         }
         return false;

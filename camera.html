@@ -141,6 +141,59 @@
       color: var(--primary);
     }
 
+    .narration-card {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      width: 90%;
+      max-width: 420px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      padding: 16px;
+      border-top: 4px solid var(--primary);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      display: none;
+    }
+    .narration-card.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .narration-card.fade-out {
+      opacity: 0;
+      transform: translateX(-50%) translateY(10px);
+    }
+    .narration-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .narration-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 16px;
+      margin: 0;
+    }
+    .narration-progress {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 600;
+      background: var(--surface-alt);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .narration-desc {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+    }
+
     /* Loading Screen inside Camera View */
     .loading-overlay {
       position: absolute;
@@ -211,6 +264,15 @@
         <svg id="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
         <svg id="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </button>
+    </div>
+
+    <!-- Narration Card -->
+    <div class="narration-card" id="narration-card">
+      <div class="narration-header">
+        <h4 class="narration-title" id="narration-title"></h4>
+        <span class="narration-progress" id="narration-progress"></span>
+      </div>
+      <p class="narration-desc" id="narration-desc"></p>
     </div>
 
   </div>

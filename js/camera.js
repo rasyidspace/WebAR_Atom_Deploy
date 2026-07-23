@@ -154,6 +154,82 @@ async function initCameraView() {
             document.getElementById('icon-play').style.display = isPlaying ? 'none' : 'block';
         };
 
+        // Narration Logic for Penemuan Elektron
+        if (atomData.id === 'penemuan-elektron') {
+            const narrationTimeline = [
+                {
+                    start: 1, end: 119,
+                    title: "Sinar Katoda Normal",
+                    description: "Elektron bergerak lurus dari katoda menuju anoda di dalam tabung vakum. Pada kondisi ini belum diberikan medan listrik maupun medan magnet."
+                },
+                {
+                    start: 120, end: 165,
+                    title: "Pengaruh Medan Listrik",
+                    description: "Saat medan listrik diberikan, lintasan sinar katoda membelok menuju kutub positif. Hal ini menunjukkan bahwa sinar katoda bermuatan negatif."
+                },
+                {
+                    start: 166, end: 255,
+                    title: "Pengaruh Medan Magnet",
+                    description: "Ketika medan magnet diterapkan, lintasan sinar katoda kembali mengalami pembelokan. Arah pembelokan bergantung pada arah medan magnet yang diberikan."
+                },
+                {
+                    start: 256, end: 300,
+                    title: "Kesimpulan Percobaan",
+                    description: "Setelah pengaruh medan dihilangkan, lintasan kembali lurus. Percobaan ini membuktikan bahwa sinar katoda merupakan aliran partikel bermuatan negatif yang kemudian dikenal sebagai elektron."
+                }
+            ];
+
+            const narrationCard = document.getElementById('narration-card');
+            const titleEl = document.getElementById('narration-title');
+            const descEl = document.getElementById('narration-desc');
+            const progressEl = document.getElementById('narration-progress');
+
+            narrationCard.style.display = 'block';
+            setTimeout(() => narrationCard.classList.add('active'), 500);
+
+            let currentTimelineIndex = -1;
+
+            sceneContainer.addUpdatable({
+                update: () => {
+                    if (!modelLoader.mixer || !modelLoader.mixer._actions || modelLoader.mixer._actions.length === 0) return;
+                    
+                    const action = modelLoader.mixer._actions[0];
+                    const FPS = 30;
+                    // Calculate current frame (looping safely)
+                    const time = action.time % action.getClip().duration;
+                    const currentFrame = Math.floor(time * FPS) + 1;
+                    
+                    let newIndex = narrationTimeline.findIndex(t => currentFrame >= t.start && currentFrame <= t.end);
+                    if (newIndex === -1) newIndex = 0; // Fallback to first if out of bounds (e.g. slight overshoots)
+
+                    if (newIndex !== currentTimelineIndex) {
+                        currentTimelineIndex = newIndex;
+                        
+                        if (narrationCard.classList.contains('active')) {
+                            narrationCard.classList.remove('active');
+                            narrationCard.classList.add('fade-out');
+                            
+                            setTimeout(() => {
+                                const timeline = narrationTimeline[newIndex];
+                                titleEl.textContent = timeline.title;
+                                descEl.textContent = timeline.description;
+                                progressEl.textContent = `Tahap ${newIndex + 1} dari ${narrationTimeline.length}`;
+                                
+                                narrationCard.classList.remove('fade-out');
+                                narrationCard.classList.add('active');
+                            }, 200);
+                        } else {
+                            // Initial load
+                            const timeline = narrationTimeline[newIndex];
+                            titleEl.textContent = timeline.title;
+                            descEl.textContent = timeline.description;
+                            progressEl.textContent = `Tahap ${newIndex + 1} dari ${narrationTimeline.length}`;
+                        }
+                    }
+                }
+            });
+        }
+
         // Double tap to reset
         let lastTap = 0;
         document.getElementById('three-canvas').addEventListener('touchend', (e) => {

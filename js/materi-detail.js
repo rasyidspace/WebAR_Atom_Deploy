@@ -3,7 +3,7 @@
 async function loadMateriDetail() {
     // Parse URL parameter
     const urlParams = new URLSearchParams(window.location.search);
-    const atomId = urlParams.get('id');
+    const atomId = urlParams.get('atom') || urlParams.get('id');
     
     if (!atomId) {
         window.location.href = 'materi.html';
@@ -34,11 +34,21 @@ async function loadMateriDetail() {
 function renderDetail(atom) {
     const container = document.getElementById('detail-container');
     const actionBar = document.getElementById('bottom-action-bar');
-    const btnAr = document.getElementById('btn-lihat-ar');
+    const btnMarkerAR = document.getElementById('btn-marker-ar');
+    const btnPreview3D = document.getElementById('btn-preview-3d');
+    const btnCameraView = document.getElementById('btn-camera-view');
     
-    // Configure Preview 3D button
-    btnAr.onclick = () => {
-        window.location.href = `viewer.html?id=${atom.id}`;
+    // Configure buttons
+    btnMarkerAR.onclick = () => {
+        window.location.href = `ar.html?atom=${atom.id}`;
+    };
+    
+    btnPreview3D.onclick = () => {
+        window.location.href = `viewer.html?atom=${atom.id}`;
+    };
+    
+    btnCameraView.onclick = () => {
+        window.location.href = `camera.html?atom=${atom.id}`;
     };
     
     // Build Lists

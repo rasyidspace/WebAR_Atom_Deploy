@@ -21,7 +21,7 @@ async function initAR() {
         if (mindarManager) {
             try { mindarManager.stop(); } catch(e) {}
         }
-        window.location.href = `viewer.html?id=${atomId}`;
+        window.location.href = `materi-detail.html?atom=${atomId}`;
     };
 
     // 2. Load atom configuration

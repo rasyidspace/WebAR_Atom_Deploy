@@ -21,7 +21,7 @@ async function initViewer() {
 
     // 2. Setup Back & AR buttons
     document.getElementById('btn-back').onclick = () => {
-        window.location.href = `materi-detail.html?id=${atomId}`;
+        window.location.href = `materi-detail.html?atom=${atomId}`;
     };
     
     document.getElementById('btn-lihat-ar').onclick = () => {

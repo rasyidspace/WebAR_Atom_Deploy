@@ -11,7 +11,7 @@ let controls = null;
 async function initViewer() {
     // 1. Get atom ID
     const urlParams = new URLSearchParams(window.location.search);
-    atomId = urlParams.get('id');
+    atomId = urlParams.get('atom') || urlParams.get('id');
 
     if (!atomId) {
         alert("Silakan pilih model atom terlebih dahulu.");

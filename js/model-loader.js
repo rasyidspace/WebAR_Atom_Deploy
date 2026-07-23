@@ -77,6 +77,11 @@ export class ModelLoader {
             const sz = (atomConfig.scale?.[2] || 1) * baseScale;
             model.scale.set(sx, sy, sz);
             if (atomConfig.rotation) model.rotation.set(...atomConfig.rotation);
+            if (atomConfig.position) {
+                model.position.x += atomConfig.position[0];
+                model.position.y += atomConfig.position[1];
+                model.position.z += atomConfig.position[2];
+            }
         } else {
             model.scale.set(baseScale, baseScale, baseScale);
         }

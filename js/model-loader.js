@@ -60,14 +60,25 @@ export class ModelLoader {
         // Center model using BoundingBox
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
+        
+        // Normalize Scale to 1 Unit max dimension to fit MindAR target perfectly
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const baseScale = maxDim > 0 ? (1 / maxDim) : 1;
+        
         model.position.x += (model.position.x - center.x);
         model.position.y += (model.position.y - center.y);
         model.position.z += (model.position.z - center.z);
 
-        // Apply config transforms
+        // Apply config transforms (multiply base scale by config scale)
         if (atomConfig) {
-            if (atomConfig.scale) model.scale.set(...atomConfig.scale);
+            const sx = (atomConfig.scale?.[0] || 1) * baseScale;
+            const sy = (atomConfig.scale?.[1] || 1) * baseScale;
+            const sz = (atomConfig.scale?.[2] || 1) * baseScale;
+            model.scale.set(sx, sy, sz);
             if (atomConfig.rotation) model.rotation.set(...atomConfig.rotation);
+        } else {
+            model.scale.set(baseScale, baseScale, baseScale);
         }
 
         // Setup Animations

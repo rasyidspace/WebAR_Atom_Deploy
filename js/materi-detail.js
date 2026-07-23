@@ -110,7 +110,7 @@ function renderDetail(atom) {
     `;
     
     container.innerHTML = html;
-    actionBar.style.display = 'block';
+    actionBar.style.display = 'flex';
 }
 
 document.addEventListener('DOMContentLoaded', loadMateriDetail);

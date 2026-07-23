@@ -74,6 +74,13 @@ export class MindARManager {
             }
         });
         this.anchor.group.add(model);
+        
+        // DEBUG: Add a red cube to ensure tracking works
+        const geo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        const mat = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const debugCube = new THREE.Mesh(geo, mat);
+        debugCube.position.set(0, 0.5, 0);
+        this.anchor.group.add(debugCube);
     }
 
     async start() {

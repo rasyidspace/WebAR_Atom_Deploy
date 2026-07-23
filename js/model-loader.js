@@ -85,8 +85,14 @@ export class ModelLoader {
         if (gltf.animations && gltf.animations.length > 0) {
             this.mixer = new THREE.AnimationMixer(model);
             const action = this.mixer.clipAction(gltf.animations[0]);
+            action.setLoop(THREE.LoopRepeat, Infinity);
             action.play();
             
+            console.log(`Loaded Model: ${atomConfig ? atomConfig.model : 'Unknown'}`);
+            console.log(`Animation Count: ${gltf.animations.length}`);
+            console.log(`Animation Name: ${gltf.animations[0].name}`);
+            console.log(`Animation Duration: ${gltf.animations[0].duration}`);
+
             // Add self to scene updatables
             if (!this.sceneContainer.updatables.includes(this)) {
                 this.sceneContainer.addUpdatable(this);

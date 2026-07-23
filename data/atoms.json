@@ -57,7 +57,7 @@
     "timeline": "1897",
     "funFact": "Peralatan tabung sinar katoda (CRT) ini akhirnya menjadi teknologi dasar di balik televisi tabung yang digunakan manusia selama lebih dari 70 tahun!",
     "thumbnail": "assets/images/thomson.png",
-    "model": "assets/models/atom-thomson.glb",
+    "model": "assets/models/tabung-katoda.glb",
     "scale": [1.5, 1.5, 1.5],
     "rotation": [0, 0.5, 0],
     "position": [0, 0.1, 0],

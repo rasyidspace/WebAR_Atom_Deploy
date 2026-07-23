@@ -138,6 +138,22 @@ async function initCameraView() {
             update: () => controls.update()
         });
 
+        // Setup UI Controls
+        if (modelLoader.mixer) {
+            document.getElementById('btn-pause').style.display = 'flex';
+        }
+
+        document.getElementById('btn-reset').onclick = () => {
+            controls.reset();
+            sceneContainer.camera.position.set(0, 0, 5);
+        };
+
+        document.getElementById('btn-pause').onclick = () => {
+            const isPlaying = modelLoader.toggleAnimation();
+            document.getElementById('icon-pause').style.display = isPlaying ? 'block' : 'none';
+            document.getElementById('icon-play').style.display = isPlaying ? 'none' : 'block';
+        };
+
         // Double tap to reset
         let lastTap = 0;
         document.getElementById('three-canvas').addEventListener('touchend', (e) => {

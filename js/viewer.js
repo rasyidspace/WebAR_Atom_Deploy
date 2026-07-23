@@ -65,7 +65,24 @@ async function initViewer() {
         // 6. Load Model
         if (currentAtomData.model) {
             modelLoader.loadModel(currentAtomData.model, currentAtomData);
+            modelLoader.onLoadComplete = () => {
+                if (modelLoader.mixer) {
+                    document.getElementById('btn-pause').style.display = 'flex';
+                }
+            };
         }
+
+        // Setup UI Controls
+        document.getElementById('btn-reset').onclick = () => {
+            controls.reset();
+            threeScene.camera.position.set(0, 1.5, 4);
+        };
+
+        document.getElementById('btn-pause').onclick = () => {
+            const isPlaying = modelLoader.toggleAnimation();
+            document.getElementById('icon-pause').style.display = isPlaying ? 'block' : 'none';
+            document.getElementById('icon-play').style.display = isPlaying ? 'none' : 'block';
+        };
 
         // 7. Fade out help overlay
         setTimeout(() => {

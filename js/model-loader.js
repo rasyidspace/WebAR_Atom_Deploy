@@ -180,6 +180,14 @@ export class ModelLoader {
         }
     }
 
+    toggleAnimation() {
+        if (this.mixer) {
+            this.mixer.timeScale = this.mixer.timeScale > 0 ? 0 : 1;
+            return this.mixer.timeScale > 0;
+        }
+        return false;
+    }
+
     disposeCurrentModel() {
         if (this.currentModel) {
             this.scene.remove(this.currentModel);

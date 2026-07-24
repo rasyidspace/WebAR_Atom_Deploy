@@ -25,7 +25,7 @@ async function initViewer() {
     };
     
     document.getElementById('btn-lihat-ar').onclick = () => {
-        window.location.href = `ar.html?atom=${atomId}`;
+        window.location.href = `camera.html?atom=${atomId}`;
     };
 
     // 3. Fetch Data

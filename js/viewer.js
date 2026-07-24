@@ -115,8 +115,8 @@ async function initViewer() {
             const progressEl = document.getElementById('narration-progress');
             
             // Hide static text to prevent clutter
-            document.getElementById('atom-name').style.display = 'none';
-            document.getElementById('atom-description').style.display = 'none';
+            document.getElementById('panel-title').style.display = 'none';
+            document.getElementById('panel-desc').style.display = 'none';
 
             narrationCard.style.display = 'block';
             setTimeout(() => narrationCard.classList.add('active'), 500);
@@ -179,8 +179,8 @@ async function initViewer() {
             const progressEl = document.getElementById('narration-progress');
             
             // Hide static text to prevent clutter
-            document.getElementById('atom-name').style.display = 'none';
-            document.getElementById('atom-description').style.display = 'none';
+            document.getElementById('panel-title').style.display = 'none';
+            document.getElementById('panel-desc').style.display = 'none';
 
             narrationCard.style.display = 'block';
             setTimeout(() => narrationCard.classList.add('active'), 500);

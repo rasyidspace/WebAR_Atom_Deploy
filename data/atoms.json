@@ -134,7 +134,7 @@
     ],
     "scale": [2, 2, 2],
     "rotation": [0, 0, 0],
-    "position": [0, 0, 0],
+    "position": [0.8, -0.2, 0],
     "information": {
       "atomicNumber": "N/A",
       "proton": "Diidentifikasi di Inti",

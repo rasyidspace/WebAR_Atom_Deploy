@@ -123,7 +123,15 @@
     "timeline": "1909",
     "funFact": "Rutherford sangat terkejut saat partikel alfa miliknya memantul kembali dari lempeng emas. Ia mendeskripsikannya: 'Ini sama mustahilnya seperti menembakkan meriam 15 inci ke selembar kertas tisu, lalu pelurunya memantul kembali mengenai Anda!'",
     "thumbnail": "assets/images/rutherford.png",
-    "model": "assets/models/atom-rutherford.glb",
+    "model": [
+      "assets/models/tabung-hampa-animated/step-1.glb",
+      "assets/models/tabung-hampa-animated/step-2.glb",
+      "assets/models/tabung-hampa-animated/step-3.glb",
+      "assets/models/tabung-hampa-animated/step-4.glb",
+      "assets/models/tabung-hampa-animated/step-5.glb",
+      "assets/models/tabung-hampa-animated/step-6.glb",
+      "assets/models/tabung-hampa-animated/step-7.glb"
+    ],
     "scale": [2, 2, 2],
     "rotation": [0, 0, 0],
     "position": [0, 0, 0],

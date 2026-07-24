@@ -8,6 +8,11 @@ export class ModelLoader {
         this.mixer = null;
         this.currentModel = null;
         
+        // Sequence Support
+        this.sequenceUrls = null;
+        this.currentSequenceIndex = 0;
+        this.currentAtomConfig = null;
+        
         // Setup Loading Manager
         this.manager = new THREE.LoadingManager();
         this.loader = new GLTFLoader(this.manager);
@@ -32,12 +37,24 @@ export class ModelLoader {
 
     async loadModel(url, atomConfig) {
         this.disposeCurrentModel();
+        
+        let targetUrl = url;
+        this.currentAtomConfig = atomConfig;
+
+        if (Array.isArray(url)) {
+            this.sequenceUrls = url;
+            this.currentSequenceIndex = this.currentSequenceIndex || 0; // maintain index if already set
+            targetUrl = this.sequenceUrls[this.currentSequenceIndex];
+        } else {
+            this.sequenceUrls = null;
+            this.currentSequenceIndex = 0;
+        }
 
         try {
-            const gltf = await this.loader.loadAsync(url);
+            const gltf = await this.loader.loadAsync(targetUrl);
             this.processLoadedModel(gltf, atomConfig);
         } catch (error) {
-            console.warn(`Failed to load ${url}, generating fallback 3D model.`);
+            console.warn(`Failed to load ${targetUrl}, generating fallback 3D model.`);
             this.generateFallbackModel(atomConfig);
         }
 
@@ -93,10 +110,34 @@ export class ModelLoader {
             this.mixer.timeScale = 20 / 30;
             
             const action = this.mixer.clipAction(gltf.animations[0]);
-            action.setLoop(THREE.LoopRepeat, Infinity);
+            
+            if (this.sequenceUrls && this.sequenceUrls.length > 1) {
+                // Sequence Mode: play once and trigger next
+                action.setLoop(THREE.LoopOnce, 1);
+                action.clampWhenFinished = true;
+                
+                // Ensure we don't attach multiple listeners if called again
+                if (this._onFinishedCallback) {
+                    this.mixer.removeEventListener('finished', this._onFinishedCallback);
+                }
+                
+                this._onFinishedCallback = () => {
+                    this.currentSequenceIndex++;
+                    if (this.currentSequenceIndex >= this.sequenceUrls.length) {
+                        this.currentSequenceIndex = 0; // Loop back to start
+                    }
+                    this.loadModel(this.sequenceUrls, this.currentAtomConfig);
+                };
+                
+                this.mixer.addEventListener('finished', this._onFinishedCallback);
+            } else {
+                // Normal Mode: Loop forever
+                action.setLoop(THREE.LoopRepeat, Infinity);
+            }
+            
             action.play();
             
-            console.log(`Loaded Model: ${atomConfig ? atomConfig.model : 'Unknown'}`);
+            console.log(`Loaded Model: ${atomConfig && typeof atomConfig.model === 'string' ? atomConfig.model : 'Sequence Step ' + (this.currentSequenceIndex + 1)}`);
             console.log(`Animation Count: ${gltf.animations.length}`);
             console.log(`Animation Name: ${gltf.animations[0].name}`);
             console.log(`Animation Duration: ${gltf.animations[0].duration}`);

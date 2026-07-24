@@ -132,9 +132,10 @@
       "assets/models/tabung-hampa-animated/step-6.glb",
       "assets/models/tabung-hampa-animated/step-7.glb"
     ],
-    "scale": [2, 2, 2],
+    "disableAutoAdjust": true,
+    "scale": [1, 1, 1],
     "rotation": [0, 0, 0],
-    "position": [0.8, -0.2, 0],
+    "position": [0, 0, 0],
     "information": {
       "atomicNumber": "N/A",
       "proton": "Diidentifikasi di Inti",

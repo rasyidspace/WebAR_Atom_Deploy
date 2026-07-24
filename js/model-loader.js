@@ -74,18 +74,23 @@ export class ModelLoader {
             }
         });
 
-        // Center model using BoundingBox
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        
-        // Normalize Scale to 1 Unit max dimension to fit MindAR target perfectly
-        const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const baseScale = maxDim > 0 ? (1 / maxDim) : 1;
-        
-        model.position.x += (model.position.x - center.x);
-        model.position.y += (model.position.y - center.y);
-        model.position.z += (model.position.z - center.z);
+        const disableAuto = atomConfig && atomConfig.disableAutoAdjust === true;
+        let baseScale = 1;
+
+        if (!disableAuto) {
+            // Center model using BoundingBox
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            
+            // Normalize Scale to 1 Unit max dimension to fit MindAR target perfectly
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            baseScale = maxDim > 0 ? (1 / maxDim) : 1;
+            
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
+        }
 
         // Apply config transforms (multiply base scale by config scale)
         if (atomConfig) {

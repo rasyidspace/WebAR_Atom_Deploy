@@ -34,14 +34,11 @@ async function loadMateriDetail() {
 function renderDetail(atom) {
     const container = document.getElementById('detail-container');
     const actionBar = document.getElementById('bottom-action-bar');
-    const btnMarkerAR = document.getElementById('btn-marker-ar');
     const btnPreview3D = document.getElementById('btn-preview-3d');
     const btnCameraView = document.getElementById('btn-camera-view');
     
     // Configure buttons
-    btnMarkerAR.onclick = () => {
-        window.location.href = `ar.html?atom=${atom.id}`;
-    };
+
     
     btnPreview3D.onclick = () => {
         window.location.href = `viewer.html?atom=${atom.id}`;

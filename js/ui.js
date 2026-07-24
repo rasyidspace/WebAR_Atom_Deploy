@@ -75,6 +75,6 @@ function startAR(modelName) {
         closeModal();
     }
     
-    window.location.href = `ar.html?id=${atomId}`;
+    window.location.href = `camera.html?atom=${atomId}`;
   }
 }

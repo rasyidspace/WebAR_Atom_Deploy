@@ -228,6 +228,56 @@ async function initCameraView() {
                     }
                 }
             });
+        } else if (atomData.id === 'penemuan-inti') {
+            const narrationTimeline = [
+                { title: "Observasi 1", description: "Sinar bergerak lurus menembus lempeng emas (diteruskan)." },
+                { title: "Penjelasan 1", description: "Karena sinar melewati ruang hampa (tidak mengenai inti atom)." },
+                { title: "Observasi 2", description: "Sinar menembus lempeng emas namun bergerak membelok (dibelokkan)." },
+                { title: "Penjelasan 2", description: "Karena sinar mendekati inti atom." },
+                { title: "Observasi 3", description: "Sinar bergerak memantul saat mengenai lempeng emas (dipantulkan)." },
+                { title: "Penjelasan 3", description: "Karena sinar tepat mengenai inti atom." },
+                { title: "Kesimpulan", description: "Terdapat sinar alfa yang diteruskan, dibelokkan, dan dipantulkan." }
+            ];
+
+            const narrationCard = document.getElementById('narration-card');
+            const titleEl = document.getElementById('narration-title');
+            const descEl = document.getElementById('narration-desc');
+            const progressEl = document.getElementById('narration-progress');
+
+            narrationCard.style.display = 'block';
+            setTimeout(() => narrationCard.classList.add('active'), 500);
+
+            let lastRenderedIndex = -1;
+
+            sceneContainer.addUpdatable({
+                update: () => {
+                    const newIndex = modelLoader.currentSequenceIndex;
+                    // modelLoader.sequenceUrls might not be set immediately, ensure newIndex is valid
+                    if (newIndex !== undefined && newIndex !== lastRenderedIndex && narrationTimeline[newIndex]) {
+                        lastRenderedIndex = newIndex;
+                        
+                        if (narrationCard.classList.contains('active')) {
+                            narrationCard.classList.remove('active');
+                            narrationCard.classList.add('fade-out');
+                            
+                            setTimeout(() => {
+                                const timeline = narrationTimeline[newIndex];
+                                titleEl.textContent = timeline.title;
+                                descEl.textContent = timeline.description;
+                                progressEl.textContent = `Tahap ${newIndex + 1} dari ${narrationTimeline.length}`;
+                                
+                                narrationCard.classList.remove('fade-out');
+                                narrationCard.classList.add('active');
+                            }, 200);
+                        } else {
+                            const timeline = narrationTimeline[newIndex];
+                            titleEl.textContent = timeline.title;
+                            descEl.textContent = timeline.description;
+                            progressEl.textContent = `Tahap ${newIndex + 1} dari ${narrationTimeline.length}`;
+                        }
+                    }
+                }
+            });
         }
 
         // Double tap to reset

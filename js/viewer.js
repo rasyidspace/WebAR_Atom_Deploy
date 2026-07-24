@@ -113,6 +113,10 @@ async function initViewer() {
             const titleEl = document.getElementById('narration-title');
             const descEl = document.getElementById('narration-desc');
             const progressEl = document.getElementById('narration-progress');
+            
+            // Hide static text to prevent clutter
+            document.getElementById('atom-name').style.display = 'none';
+            document.getElementById('atom-description').style.display = 'none';
 
             narrationCard.style.display = 'block';
             setTimeout(() => narrationCard.classList.add('active'), 500);
@@ -173,6 +177,10 @@ async function initViewer() {
             const titleEl = document.getElementById('narration-title');
             const descEl = document.getElementById('narration-desc');
             const progressEl = document.getElementById('narration-progress');
+            
+            // Hide static text to prevent clutter
+            document.getElementById('atom-name').style.display = 'none';
+            document.getElementById('atom-description').style.display = 'none';
 
             narrationCard.style.display = 'block';
             setTimeout(() => narrationCard.classList.add('active'), 500);

@@ -61,9 +61,23 @@ function renderSummary(atom) {
     `;
 }
 
-function getIllustrationSvg(name) {
-    // Placeholder SVGs for illustrations
-    return `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#C86A2A" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3" fill="#C86A2A"/></svg>`;
+function getIllustrationHtml(name) {
+    const images = {
+        'atom-concept': 'atom-concept.png',
+        'dalton-model': 'dalton-model.png',
+        'cathode-ray': 'cathode-ray.jpg',
+        'thomson-model': 'thomson-model.png',
+        'gold-foil': 'gold-foil.png',
+        'rutherford-model': 'rutherford-model.png',
+        'neutron-discovery': 'neutron-discovery.webp',
+        'bohr-model': 'bohr-model.jpg',
+        'quantum-orbital': 'quantum-orbital.jpg'
+    };
+    
+    const filename = images[name];
+    if (!filename) return '';
+    
+    return `<img src="assets/images/${filename}" alt="${name}" style="width: 100%; border-radius: 8px;">`;
 }
 
 function renderSections(atom) {
@@ -80,8 +94,8 @@ function renderSections(atom) {
         `;
         if (sec.illustration) {
             html += `<div class="illustration-card">
-                ${getIllustrationSvg(sec.illustration)}
-                <span>Visualisasi: ${sec.illustration}</span>
+                ${getIllustrationHtml(sec.illustration)}
+                <span style="font-size: 12px; margin-top: 8px; color: var(--text-light); text-align: center; display: block;">Visualisasi: ${sec.illustration.replace('-', ' ')}</span>
             </div>`;
         }
         html += `</div>`;

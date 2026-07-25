@@ -471,19 +471,19 @@
   line-height: 1.6;
 }
 
-/* Illustration Placeholder */
+/* Illustration Container */
 .illustration-card {
   background: var(--white);
-  border: 1px dashed var(--border);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 24px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 16px 0;
   color: var(--text-light);
-  gap: 8px;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Scientist Card */

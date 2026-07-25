@@ -1,0 +1,405 @@
+const fs = require('fs');
+
+const atoms = [
+  {
+    id: "pendahuluan",
+    name: "Pendahuluan",
+    title: "Mengenal Struktur Materi",
+    subtitle: "Apa itu Atom?",
+    category: "PENDAHULUAN",
+    scientist: "Filsuf Kuno & Ilmuwan Modern",
+    nationality: "Global",
+    year: "400 SM - Sekarang",
+    summary: "Sejak zaman kuno, manusia telah bertanya-tanya tentang apa penyusun dasar alam semesta. Konsep atom bermula dari pemikiran filosofis hingga akhirnya dibuktikan secara ilmiah.",
+    sections: [
+      {
+        title: "Asal Usul Kata Atom",
+        content: "Kata 'atom' berasal dari bahasa Yunani 'atomos' yang berarti tidak dapat dibagi lagi. Konsep ini pertama kali dicetuskan oleh filsuf Yunani, Democritus dan Leucippus sekitar tahun 400 SM.",
+        illustration: "atom-concept"
+      },
+      {
+        title: "Dari Filsafat ke Sains",
+        content: "Selama ribuan tahun, gagasan tentang atom hanyalah sebuah pemikiran filosofis tanpa bukti eksperimental. Barulah pada abad ke-18 dan ke-19, seiring dengan perkembangan ilmu kimia modern, para ilmuwan mulai menemukan bukti-bukti nyata keberadaan atom."
+      },
+      {
+        title: "Pentingnya Memahami Atom",
+        content: "Memahami struktur atom adalah kunci untuk mengerti bagaimana materi bereaksi, mengapa bahan tertentu bersifat konduktor, dan bagaimana molekul penyusun kehidupan terbentuk."
+      }
+    ],
+    importantPoints: [
+      "Atomos berarti tidak dapat dibagi.",
+      "Democritus adalah tokoh pertama yang mengemukakan ide atom.",
+      "Dibutuhkan ribuan tahun untuk mengubah konsep ini menjadi teori ilmiah."
+    ],
+    funFacts: [
+      "Aristoteles, filsuf yang sangat berpengaruh, menolak teori atom Democritus. Ia percaya materi terbuat dari empat elemen: tanah, air, udara, dan api. Pengaruhnya membuat teori atom tenggelam selama ribuan tahun!"
+    ],
+    applications: [
+      "Material Science: Memahami kekuatan dan kelenturan suatu bahan logam atau polimer.",
+      "Farmasi: Mendesain molekul obat baru yang tepat sasaran."
+    ],
+    keywords: ["Materi", "Atomos", "Democritus", "Filsafat", "Partikel"],
+    biography: "Democritus adalah seorang filsuf Yunani pra-Socrates yang hidup dari tahun 460 hingga 370 SM. Ia dikenal karena merumuskan teori atom tentang alam semesta, yang sangat mirip dengan pandangan modern mengenai struktur atom.",
+    contribution: "Mencetuskan ide bahwa seluruh materi terdiri dari partikel-partikel mikroskopis yang tidak dapat dihancurkan.",
+    timelinePosition: 1,
+    model: "",
+    thumbnail: "assets/images/John-Dalton.webp",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'
+  },
+  {
+    id: "dalton",
+    name: "Teori Atom Dalton",
+    title: "Bola Pejal Tak Terbagi",
+    subtitle: "Teori Atom Ilmiah Pertama",
+    category: "TEORI ATOM",
+    scientist: "John Dalton",
+    nationality: "Inggris",
+    year: "1803",
+    summary: "John Dalton membawa konsep atom kembali ke dunia sains. Ia mengemukakan bahwa atom adalah partikel terkecil seperti bola pejal yang menyusun segala macam materi di alam semesta.",
+    sections: [
+      {
+        title: "Kembalinya Atom",
+        content: "Berdasarkan pengamatannya terhadap berbagai reaksi kimia dan massa gas, Dalton menyimpulkan bahwa setiap unsur terdiri dari atom yang unik.",
+        illustration: "dalton-model"
+      },
+      {
+        title: "Postulat Dalton",
+        content: "Dalton menyatakan bahwa atom suatu unsur identik dalam ukuran, massa, dan sifat kimia. Atom juga tidak dapat diciptakan, dihancurkan, atau dibagi menjadi bagian yang lebih kecil lagi."
+      },
+      {
+        title: "Pembentukan Senyawa",
+        content: "Menurut Dalton, senyawa kimia terbentuk ketika atom-atom dari dua unsur atau lebih bergabung dengan perbandingan rasio bilangan bulat yang sederhana."
+      }
+    ],
+    importantPoints: [
+      "Atom adalah bagian terkecil penyusun materi.",
+      "Atom tidak dapat diciptakan maupun dimusnahkan.",
+      "Senyawa terdiri dari gabungan dua atau lebih jenis atom."
+    ],
+    funFacts: [
+      "Dalton adalah orang pertama yang mendeskripsikan kebutaan warna secara ilmiah, karena ia sendiri mengalaminya. Hingga kini, buta warna merah-hijau sering disebut sebagai 'Daltonisme'."
+    ],
+    applications: [
+      "Stoikiometri Kimia: Dasar untuk menyeimbangkan persamaan reaksi.",
+      "Hukum Perbandingan Tetap: Digunakan dalam produksi bahan kimia industri untuk memastikan rasio campuran yang tepat."
+    ],
+    keywords: ["Bola Pejal", "Postulat", "Massa", "Unsur", "Senyawa"],
+    biography: "Lahir dalam keluarga Quaker yang miskin, Dalton adalah seorang guru dan ilmuwan otodidak. Selain teori atom, ia juga ahli meteorologi yang mencatat kondisi cuaca setiap hari selama 57 tahun.",
+    contribution: "Mengubah spekulasi kuno menjadi kerangka teori kimia kuantitatif yang solid.",
+    timelinePosition: 2,
+    model: "assets/models/atom-dalton.glb",
+    thumbnail: "assets/images/John-Dalton.webp",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>'
+  },
+  {
+    id: "penemuan-elektron",
+    name: "Penemuan Elektron",
+    title: "Sinar Misterius di Tabung Kaca",
+    subtitle: "Eksperimen Sinar Katoda",
+    category: "EKSPERIMEN",
+    scientist: "J.J. Thomson",
+    nationality: "Inggris",
+    year: "1897",
+    summary: "Melalui eksperimen dengan tabung hampa udara bertegangan tinggi, Thomson menemukan partikel bermuatan negatif yang jauh lebih ringan daripada atom. Inilah bukti pertama bahwa atom dapat dibagi!",
+    sections: [
+      {
+        title: "Eksperimen Sinar Katoda",
+        content: "Thomson menembakkan aliran listrik melalui tabung kaca vakum. Ia mengamati adanya pancaran sinar hijau yang merambat dari kutub negatif (katoda) ke kutub positif (anoda).",
+        illustration: "cathode-ray"
+      },
+      {
+        title: "Sifat Partikel Sinar",
+        content: "Saat Thomson mendekatkan medan magnet atau pelat listrik ke tabung, sinar tersebut selalu berbelok menjauhi pelat negatif dan mendekati pelat positif. Hal ini membuktikan sinar itu bermuatan negatif."
+      },
+      {
+        title: "Runtuhnya Teori Dalton",
+        content: "Karena sinar ini identik terlepas dari jenis gas atau logam elektroda yang digunakan, Thomson menyimpulkan partikel ini (elektron) merupakan komponen fundamental dari semua atom."
+      }
+    ],
+    importantPoints: [
+      "Elektron bermuatan listrik negatif.",
+      "Massa elektron sangat kecil dibandingkan massa atom keseluruhan.",
+      "Keberadaan elektron membuktikan bahwa atom masih dapat dibagi lagi."
+    ],
+    funFacts: [
+      "Peralatan tabung sinar katoda (CRT) ini akhirnya berkembang menjadi teknologi dasar di balik televisi tabung dan monitor komputer generasi awal sebelum era layar datar (LCD/LED)."
+    ],
+    applications: [
+      "Elektronik Analog: Dasar kerja osiloskop dan layar CRT.",
+      "Teknologi Medis: Prinsip dasar mikroskop elektron yang mampu melihat hingga skala molekuler."
+    ],
+    keywords: ["Sinar Katoda", "Elektron", "Vakum", "Kutub Negatif", "Elektroda"],
+    biography: "Sir Joseph John Thomson adalah fisikawan Cambridge. Berkat penemuannya, ia berhasil mengubah paradigma klasik struktur benda padat dan memimpin transisi ilmu fisika menuju era subatomik.",
+    contribution: "Menemukan elektron (partikel subatomik pertama).",
+    timelinePosition: 3,
+    model: "assets/models/tabung-katoda.glb",
+    thumbnail: "assets/images/Thomson.png",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2"/><path d="M18 6l4 6-4 6"/></svg>'
+  },
+  {
+    id: "thomson",
+    name: "Teori Atom Thomson",
+    title: "Model Roti Kismis",
+    subtitle: "Menjelaskan Kenetralan Atom",
+    category: "MODEL ATOM",
+    scientist: "J.J. Thomson",
+    nationality: "Inggris",
+    year: "1904",
+    summary: "Setelah menemukan elektron yang negatif, Thomson menyadari atom secara keseluruhan bersifat netral. Ia mengusulkan bahwa atom berisi 'sup' positif tempat elektron tertanam di dalamnya.",
+    sections: [
+      {
+        title: "Konsep Roti Kismis",
+        content: "Model ini mengibaratkan atom sebagai kue atau roti kismis. Bagian roti mewakili awan muatan positif yang tersebar merata, sedangkan kismisnya adalah elektron negatif yang tersebar di dalamnya.",
+        illustration: "thomson-model"
+      },
+      {
+        title: "Keseimbangan Muatan",
+        content: "Dalam model ini, jumlah total muatan positif dalam awan atom secara persis seimbang dengan total muatan negatif dari elektron, sehingga materi tetap netral secara kelistrikan."
+      }
+    ],
+    importantPoints: [
+      "Atom merupakan bola awan bermuatan positif.",
+      "Elektron bermuatan negatif tersebar di dalamnya seperti kismis.",
+      "Atom tidak memiliki inti (nukleus)."
+    ],
+    funFacts: [
+      "J.J. Thomson memenangkan Hadiah Nobel Fisika pada tahun 1906 untuk penemuan elektron sebagai partikel. Ironisnya, putranya George Paget Thomson memenangkan Nobel karena membuktikan elektron bersifat seperti gelombang!"
+    ],
+    applications: [
+      "Model Historis: Meskipun salah, model ini sangat penting karena memperkenalkan elektron secara formal dalam struktur tata letak partikel materi."
+    ],
+    keywords: ["Roti Kismis", "Plum Pudding", "Muatan Positif", "Netral", "Awan"],
+    biography: "Sebagai direktur Laboratorium Cavendish di Universitas Cambridge, J.J. Thomson adalah fisikawan luar biasa dan mentor yang hebat. Ia memiliki tujuh asisten peneliti yang di kemudian hari memenangkan Hadiah Nobel.",
+    contribution: "Mencetuskan model struktur internal atom pertama yang memasukkan unsur partikel subatomik.",
+    timelinePosition: 4,
+    model: "assets/models/atom-thomson.glb",
+    thumbnail: "assets/images/Thomson.png",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="10" cy="10" r="1" fill="currentColor"/><circle cx="14" cy="14" r="1" fill="currentColor"/><circle cx="14" cy="9" r="1" fill="currentColor"/><circle cx="9" cy="14" r="1" fill="currentColor"/></svg>'
+  },
+  {
+    id: "penemuan-inti",
+    name: "Penemuan Inti Atom",
+    title: "Menembak Lempeng Emas",
+    subtitle: "Runtuhnya Roti Kismis",
+    category: "EKSPERIMEN",
+    scientist: "Ernest Rutherford",
+    nationality: "Selandia Baru / Inggris",
+    year: "1911",
+    summary: "Rutherford bersama murid-muridnya menembakkan partikel alfa bermuatan positif ke lembaran tipis emas murni. Apa yang mereka temukan memutarbalikkan pemahaman fisika saat itu.",
+    sections: [
+      {
+        title: "Eksperimen Geiger-Marsden",
+        content: "Di bawah arahan Rutherford, Hans Geiger dan Ernest Marsden memancarkan sinar alfa cepat menuju lempeng emas setipis kertas. Mereka meletakkan detektor melingkar untuk melihat ke mana sinar alfa itu pergi.",
+        illustration: "gold-foil"
+      },
+      {
+        title: "Kejutan Besar",
+        content: "Menurut teori Thomson, semua partikel alfa seharusnya menembus emas dengan mudah. Faktanya, sebagian besar memang menembus lurus, tetapi beberapa dibelokkan tajam, dan sebagian kecil bahkan memantul kembali ke sumbernya!"
+      },
+      {
+        title: "Analogi Peluru Meriam",
+        content: "Rutherford mendeskripsikan kejutan ini: 'Rasanya sama tak masuk akalnya seolah Anda menembakkan peluru meriam 15 inci ke selembar kertas tisu, dan peluru itu memantul mengenai Anda.'"
+      }
+    ],
+    importantPoints: [
+      "Sebagian besar sinar diteruskan: Menandakan atom sebagian besar berupa ruang kosong.",
+      "Sebagian sinar dibelokkan: Menandakan adanya pusat muatan positif yang menolak partikel alfa.",
+      "Sebagian kecil dipantulkan: Menunjukkan ada pusat yang sangat padat dan bermassa besar di dalam atom."
+    ],
+    funFacts: [
+      "Emas (Aurum) dipilih karena sifatnya yang luar biasa dapat ditempa (malleable), sehingga bisa dijadikan lembaran yang sangat amat tipis (ketebalan beberapa atom saja) agar eksperimen berhasil."
+    ],
+    applications: [
+      "Radiologi Dasar: Penemuan radiasi alfa menjadi tonggak penting dalam perkembangan ilmu fisika nuklir awal dan terapi berbasis radiasi."
+    ],
+    keywords: ["Partikel Alfa", "Lempeng Emas", "Radioaktif", "Pemantulan", "Pusat Padat"],
+    biography: "Ernest Rutherford adalah seorang perintis luar biasa yang dijuluki 'Bapak Fisika Nuklir'. Menariknya, hadiah Nobelnya justru dianugerahkan di bidang Kimia, sebuah fakta yang sering ia jadikan lelucon.",
+    contribution: "Menemukan keberadaan nukleus (inti atom) bermuatan positif yang padat.",
+    timelinePosition: 5,
+    model: "assets/models/penemuan-inti-animasi.glb",
+    thumbnail: "assets/images/ernest-rutherford.webp",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
+  },
+  {
+    id: "rutherford",
+    name: "Teori Atom Rutherford",
+    title: "Tata Surya Mini",
+    subtitle: "Atom Sebagai Ruang Kosong",
+    category: "MODEL ATOM",
+    scientist: "Ernest Rutherford",
+    nationality: "Selandia Baru / Inggris",
+    year: "1911",
+    summary: "Berdasarkan penemuannya tentang inti atom, Rutherford menciptakan model atom di mana inti padat berada di tengah, dikelilingi oleh elektron yang mengorbit seperti planet mengelilingi matahari.",
+    sections: [
+      {
+        title: "Massa Terpusat",
+        content: "Rutherford menyatakan bahwa hampir seluruh massa atom (99.9%) berkumpul di area yang sangat sangat kecil di pusatnya, yang ia sebut sebagai nukleus (inti).",
+        illustration: "rutherford-model"
+      },
+      {
+        title: "Ruang Hampa",
+        content: "Sebagian besar volume atom ternyata hanyalah ruang kosong. Jarak antara inti dengan lintasan elektron sangat jauh bila diukur menggunakan skala atomik."
+      },
+      {
+        title: "Kelemahan Model",
+        content: "Berdasarkan fisika klasik Maxwell, elektron yang bergerak mengelilingi inti harusnya memancarkan gelombang elektromagnetik dan kehilangan energi, yang pada akhirnya akan membuat elektron jatuh menabrak inti. Namun nyatanya, atom stabil."
+      }
+    ],
+    importantPoints: [
+      "Terdapat nukleus (inti atom) bermuatan positif di pusat atom.",
+      "Inti atom berukuran sangat kecil tapi memiliki massa yang padat.",
+      "Elektron bergerak mengelilingi inti atom dalam orbit.",
+      "Kelemahan: Tidak dapat menjelaskan stabilitas orbit elektron."
+    ],
+    funFacts: [
+      "Jika inti atom diperbesar seukuran bola basket yang diletakkan di tengah lapangan stadion sepak bola, elektron terdekatnya akan berada di pinggiran bangku penonton paling atas!"
+    ],
+    applications: [
+      "Simbol Ilmu Pengetahuan: Meskipun disempurnakan oleh Bohr, ilustrasi atom Rutherford (tata surya mini) tetap menjadi ikon universal yang mewakili sains hingga hari ini."
+    ],
+    keywords: ["Tata Surya", "Nukleus", "Proton", "Orbit", "Fisika Klasik"],
+    biography: "Rutherford memimpin transisi dunia sains memasuki era fisika nuklir. Model atom tata surya ini menjadi batu pijakan penting bagi fisika mekanika kuantum yang akan segera lahir beberapa dekade kemudian.",
+    contribution: "Merumuskan model struktur atom berbasis inti atom sentral.",
+    timelinePosition: 6,
+    model: "assets/models/atom-rutherford.glb",
+    thumbnail: "assets/images/ernest-rutherford.webp",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="4" ry="10" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="10" transform="rotate(-45 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>'
+  },
+  {
+    id: "penemuan-neutron",
+    name: "Penemuan Neutron",
+    title: "Partikel Tak Bermuatan",
+    subtitle: "Teka-teki Massa Atom",
+    category: "PENEMUAN",
+    scientist: "James Chadwick",
+    nationality: "Inggris",
+    year: "1932",
+    summary: "Fisikawan mendapati bahwa massa inti atom lebih berat daripada jumlah proton di dalamnya. Chadwick membuktikan keberadaan partikel netral di inti atom yang menyumbang massa tambahan tersebut.",
+    sections: [
+      {
+        title: "Massa yang Hilang",
+        content: "Para ilmuwan bingung mengapa atom Helium memiliki massa empat kali massa Hidrogen, padahal Helium hanya memiliki dua proton. Ada sesuatu di dalam inti atom yang tidak bermuatan namun memiliki massa berat.",
+        illustration: "neutron-discovery"
+      },
+      {
+        title: "Eksperimen Beryllium",
+        content: "James Chadwick menembakkan sinar alfa ke lempengan Beryllium. Sinar tersebut menghasilkan radiasi yang tidak dibelokkan oleh medan magnet, membuktikan partikel itu tidak memiliki muatan (netral)."
+      },
+      {
+        title: "Dampak Penemuan",
+        content: "Partikel yang dinamakan 'Neutron' ini melengkapi susunan atom, terdiri dari proton dan neutron di bagian nukleus. Hal ini juga menjadi kunci terbukanya pintu reaksi fisi nuklir."
+      }
+    ],
+    importantPoints: [
+      "Neutron tidak bermuatan listrik (netral).",
+      "Massa neutron hampir sama persis dengan massa proton.",
+      "Proton dan Neutron bersama-sama membentuk Inti Atom (Nukleon)."
+    ],
+    funFacts: [
+      "Chadwick adalah mantan murid Rutherford. Penemuan neutronnya memecahkan masalah mendasar kimia tentang isotop (atom sejenis dengan massa yang berbeda)."
+    ],
+    applications: [
+      "Fisi Nuklir: Menembakkan neutron ke inti uranium adalah cara utama untuk memicu reaksi berantai pada pembangkit listrik tenaga nuklir dan senjata atom."
+    ],
+    keywords: ["Neutron", "Nukleon", "Radiasi", "Massa Atom", "Isotop"],
+    biography: "Sir James Chadwick dianugerahi Hadiah Nobel Fisika pada tahun 1935. Karena penemuannya memicu era senjata atom, ia kemudian memegang peran penting dalam Proyek Manhattan selama Perang Dunia II.",
+    contribution: "Menemukan komponen subatomik penting terakhir (Neutron).",
+    timelinePosition: 7,
+    model: "",
+    thumbnail: "assets/images/Erwin-Schrodinger.png",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" stroke-dasharray="2 2"/></svg>'
+  },
+  {
+    id: "bohr",
+    name: "Teori Atom Bohr",
+    title: "Orbit Bertingkat (Kulit)",
+    subtitle: "Menerapkan Kuantum ke Atom",
+    category: "MODEL ATOM",
+    scientist: "Niels Bohr",
+    nationality: "Denmark",
+    year: "1913",
+    summary: "Niels Bohr menyelamatkan model Rutherford dengan mengusulkan bahwa elektron hanya dapat bergerak di lintasan melingkar tertentu pada jarak tertentu (kulit atom), tanpa memancarkan energi.",
+    sections: [
+      {
+        title: "Spektrum Hidrogen",
+        content: "Bohr mengembangkan teorinya untuk menjelaskan mengapa gas hidrogen yang dipanaskan hanya memancarkan cahaya pada warna (panjang gelombang) tertentu, tidak memancarkan spektrum cahaya sinambung.",
+        illustration: "bohr-model"
+      },
+      {
+        title: "Tingkat Energi Kuantisasi",
+        content: "Dalam teori ini, orbit atau 'kulit' tempat elektron mengelilingi inti berada dalam tingkat energi yang tetap. Elektron tidak bisa berada di antara kulit-kulit ini."
+      },
+      {
+        title: "Lompatan Kuantum",
+        content: "Elektron dapat 'melompat' antar kulit. Saat menyerap energi, elektron melompat ke kulit luar (eksitasi). Saat kembali ke kulit dalam, ia memancarkan cahaya berupa foton."
+      }
+    ],
+    importantPoints: [
+      "Elektron beredar mengelilingi inti pada lintasan stasioner (tingkat energi/kulit).",
+      "Semakin jauh orbit dari inti, semakin tinggi tingkat energinya.",
+      "Elektron dapat berpindah lintasan dengan menyerap atau melepas energi (berupa cahaya)."
+    ],
+    funFacts: [
+      "Istilah populer 'Lompatan Kuantum' (Quantum Leap) yang sering digunakan di film fiksi ilmiah atau berita untuk menunjukkan 'lompatan besar' sebenarnya merujuk pada prinsip elektron Niels Bohr ini!"
+    ],
+    applications: [
+      "Lampu Neon & Kembang Api: Warna-warni indah pada nyala kembang api berasal dari loncatan elektron unsur kimia tertentu ke tingkat energi yang lebih rendah.",
+      "Laser: Aplikasi fisika dasar prinsip eksitasi dan emisi foton."
+    ],
+    keywords: ["Kulit Atom", "Tingkat Energi", "Lompatan Kuantum", "Spektrum", "Foton"],
+    biography: "Niels Bohr tidak hanya brilian dalam fisika, namun ia juga seorang filsuf dan promotor perdamaian. Bohr membantu banyak ilmuwan melarikan diri dari rezim Nazi saat Perang Dunia II.",
+    contribution: "Mengaplikasikan konsep fisika kuantum ke struktur atom dan spektrum pancaran.",
+    timelinePosition: 8,
+    model: "assets/models/atom-nielsbohr.glb",
+    thumbnail: "assets/images/Niels-bohr.png",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="2" r="1.5" fill="currentColor"/><circle cx="18" cy="12" r="1.5" fill="currentColor"/></svg>'
+  },
+  {
+    id: "quantum",
+    name: "Mekanika Kuantum",
+    title: "Awan Probabilitas",
+    subtitle: "Model Atom Modern",
+    category: "MODEL ATOM",
+    scientist: "Schrödinger, Heisenberg",
+    nationality: "Austria / Jerman",
+    year: "1926",
+    summary: "Berbeda dengan lintasan pasti ala Bohr, mekanika kuantum menyatakan bahwa posisi pasti elektron tidak bisa ditentukan, hanya probabilitas atau 'peluang' untuk menemukannya di daerah tertentu (orbital).",
+    sections: [
+      {
+        title: "Prinsip Ketidakpastian",
+        content: "Werner Heisenberg merumuskan bahwa kita tidak akan pernah bisa mengetahui posisi dan momentum (kecepatan) elektron secara bersamaan dengan pasti.",
+        illustration: "quantum-orbital"
+      },
+      {
+        title: "Persamaan Gelombang",
+        content: "Erwin Schrödinger memperlakukan elektron tidak hanya sebagai partikel keras, melainkan juga sebagai gelombang. Ia merumuskan matematika kompleks untuk memprediksi probabilitas tersebut."
+      },
+      {
+        title: "Awan Elektron (Orbital)",
+        content: "Lintasan digantikan oleh daerah ruang 3D yang disebut Orbital (s, p, d, f) di mana probabilitas menemukan elektron sangat tinggi. Semakin padat awannya, semakin tinggi peluang menemukan elektron di sana."
+      }
+    ],
+    importantPoints: [
+      "Elektron bersifat ganda sebagai partikel sekaligus gelombang (Dualitas gelombang-partikel).",
+      "Posisi dan kecepatan elektron tidak bisa diukur bersamaan secara pasti.",
+      "Elektron menempati Orbital (daerah kebolehjadian/peluang)."
+    ],
+    funFacts: [
+      "Persamaan gelombang Schrödinger sangat kompleks dan aneh secara filosofis, menginspirasinya membuat eksperimen pemikiran 'Kucing Schrödinger' untuk mengkritik betapa absurdnya teori kuantum tersebut."
+    ],
+    applications: [
+      "Mikroprosesor & Semikonduktor: Memahami celah pita elektron pada bahan silikon membuat era komputer modern, smartphone, dan internet tercipta.",
+      "MRI: Teknik pencitraan resonansi magnetik di rumah sakit bergantung pada interaksi atom-kuantum."
+    ],
+    keywords: ["Orbital", "Probabilitas", "Gelombang", "Ketidakpastian", "Awan Elektron"],
+    biography: "Schrödinger memenangkan Hadiah Nobel pada tahun 1933. Persamaan gelombangnya menjadi dasar dari semua pelajaran kimia komputasi modern. Heisenberg adalah salah satu pionir mekanika matriks yang mengubah fisika fundamental.",
+    contribution: "Menciptakan representasi struktur atom kuantitatif paling akurat yang digunakan ilmu pengetahuan modern saat ini.",
+    timelinePosition: 9,
+    model: "assets/models/atom-mekakuantum.glb",
+    thumbnail: "assets/images/Erwin-Schrodinger.png",
+    iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" stroke-dasharray="2 2"/></svg>'
+  }
+];
+
+fs.writeFileSync('data/atoms.json', JSON.stringify(atoms, null, 2));
+console.log('atoms.json generated successfully');

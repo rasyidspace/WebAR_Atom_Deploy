@@ -43,7 +43,7 @@ const atoms = [
     contribution: "Mencetuskan ide bahwa seluruh materi terdiri dari partikel-partikel mikroskopis yang tidak dapat dihancurkan.",
     timelinePosition: 1,
     model: "",
-    thumbnail: "assets/images/John-Dalton.webp",
+    thumbnail: "assets/images/democrito.jpg",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'
   },
   {
@@ -216,7 +216,15 @@ const atoms = [
     biography: "Ernest Rutherford adalah seorang perintis luar biasa yang dijuluki 'Bapak Fisika Nuklir'. Menariknya, hadiah Nobelnya justru dianugerahkan di bidang Kimia, sebuah fakta yang sering ia jadikan lelucon.",
     contribution: "Menemukan keberadaan nukleus (inti atom) bermuatan positif yang padat.",
     timelinePosition: 5,
-    model: "assets/models/penemuan-inti-animasi.glb",
+    model: [
+      "assets/models/tabung-hampa-animated/step-1.glb",
+      "assets/models/tabung-hampa-animated/step-2.glb",
+      "assets/models/tabung-hampa-animated/step-3.glb",
+      "assets/models/tabung-hampa-animated/step-4.glb",
+      "assets/models/tabung-hampa-animated/step-5.glb",
+      "assets/models/tabung-hampa-animated/step-6.glb",
+      "assets/models/tabung-hampa-animated/step-7.glb"
+    ],
     thumbnail: "assets/images/ernest-rutherford.webp",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
   },
@@ -306,7 +314,7 @@ const atoms = [
     contribution: "Menemukan komponen subatomik penting terakhir (Neutron).",
     timelinePosition: 7,
     model: "",
-    thumbnail: "assets/images/Erwin-Schrodinger.png",
+    thumbnail: "assets/images/James_Chadwick.jpg",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" stroke-dasharray="2 2"/></svg>'
   },
   {

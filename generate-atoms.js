@@ -133,7 +133,7 @@ const atoms = [
     contribution: "Menemukan elektron (partikel subatomik pertama).",
     timelinePosition: 3,
     model: "assets/models/tabung-katoda.glb",
-    thumbnail: "assets/images/Thomson.png",
+    thumbnail: "assets/images/JJ_Thomson.jpg",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2"/><path d="M18 6l4 6-4 6"/></svg>'
   },
   {
@@ -225,7 +225,7 @@ const atoms = [
       "assets/models/tabung-hampa-animated/step-6.glb",
       "assets/models/tabung-hampa-animated/step-7.glb"
     ],
-    thumbnail: "assets/images/ernest-rutherford.webp",
+    thumbnail: "assets/images/Ernest_inti_atom.jpg",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
   },
   {

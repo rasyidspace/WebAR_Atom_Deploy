@@ -253,6 +253,16 @@
       "assets/models/tabung-hampa-animated/step-6.glb",
       "assets/models/tabung-hampa-animated/step-7.glb"
     ],
+    "position": [
+      1.5,
+      -1,
+      0
+    ],
+    "scale": [
+      1.2,
+      1.2,
+      1.2
+    ],
     "thumbnail": "assets/images/Ernest_inti_atom.jpg",
     "iconSvg": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 2v20M2 12h20\"/><circle cx=\"12\" cy=\"12\" r=\"3\" fill=\"currentColor\"/></svg>"
   },

@@ -133,7 +133,7 @@ const atoms = [
     contribution: "Menemukan elektron (partikel subatomik pertama).",
     timelinePosition: 3,
     model: "assets/models/tabung-katoda.glb",
-    thumbnail: "assets/images/JJ_Thomson.jpg",
+    thumbnail: "assets/images/cathode-ray.jpg",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2"/><path d="M18 6l4 6-4 6"/></svg>'
   },
   {
@@ -228,7 +228,7 @@ const atoms = [
     position: [0, -0.5, 0],
     scale: [0.8, 0.8, 0.8],
     disableAutoAdjust: true,
-    thumbnail: "assets/images/Ernest_inti_atom.jpg",
+    thumbnail: "assets/images/ernest-rutherford.webp",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
   },
   {
@@ -317,7 +317,7 @@ const atoms = [
     contribution: "Menemukan komponen subatomik penting terakhir (Neutron).",
     timelinePosition: 7,
     model: "",
-    thumbnail: "assets/images/James_Chadwick.jpg",
+    thumbnail: "assets/images/Niels-bohr.png",
     iconSvg: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" stroke-dasharray="2 2"/></svg>'
   },
   {

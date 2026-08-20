@@ -280,18 +280,29 @@ async function initCameraView() {
             });
         }
 
-        // Double tap to reset
+        // Double tap to reset (only trigger on single touches, ignore pinch)
         let lastTap = 0;
+        let maxTouches = 0;
+
+        document.getElementById('three-canvas').addEventListener('touchstart', (e) => {
+            maxTouches = Math.max(maxTouches, e.touches.length);
+        });
+
         document.getElementById('three-canvas').addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 500 && tapLength > 0) {
-                // Reset Camera
-                sceneContainer.camera.position.set(0, 0, 5);
-                controls.target.set(0, 0, 0);
-                e.preventDefault();
+            if (e.touches.length === 0) { // all fingers lifted
+                if (maxTouches === 1) { // was a single finger interaction
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+                    if (tapLength < 500 && tapLength > 0) {
+                        // Reset Camera
+                        sceneContainer.camera.position.set(0, 0, 5);
+                        controls.target.set(0, 0, 0);
+                        e.preventDefault();
+                    }
+                    lastTap = currentTime;
+                }
+                maxTouches = 0; // reset for next interaction
             }
-            lastTap = currentTime;
         });
 
         // Hide Loading Screen

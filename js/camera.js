@@ -132,7 +132,7 @@ async function initCameraView() {
         controls.dampingFactor = 0.05;
         controls.enablePan = true;
         controls.minDistance = 1;
-        controls.maxDistance = 20;
+        controls.maxDistance = 50;
         
         sceneContainer.addUpdatable({
             update: () => controls.update()
